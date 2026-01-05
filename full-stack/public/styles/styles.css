@@ -1,0 +1,23 @@
+:root {
+  --primary-glow: rgba(37, 99, 235, 0.4);
+}
+
+.hero-section {
+  background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+.btn-primary {
+  box-shadow: 0 0 20px var(--primary-glow);
+  transition: transform 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px var(--primary-glow);
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.25);
+  background-color: #111;
+}

@@ -1,0 +1,32 @@
+{
+  "name": "full-stack",
+  "version": "1.0.0",
+  "description": "Full stack project management app for my portfolio. Uses node, express, ejs, bootstrap and mongodb",
+  "keywords": [
+    "node",
+    "backend",
+    "fullstack",
+    "programming",
+    "database",
+    "template"
+  ],
+  "license": "MIT",
+  "author": "Deepak Pun",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "nodemon index"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.4",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^9.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
