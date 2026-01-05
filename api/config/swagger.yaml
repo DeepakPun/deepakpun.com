@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: Project Tracker API Documentation
+  version: 1.0.0
+  description: |
+    ### 🚀 MERN Stack API with Zod Validation
+    
+    This API serves as the backend for the **deepakpun.com** portfolio project.
+    
+    ---
+    
+    #### 🔐 Authorization
+    For **POST, PATCH, and DELETE** operations, click the **Authorize** button and use test api key:
+    `deepak-pun-2026-demo`
+    
+    ---
+    
+    <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-left: 5px solid #ffeeba; border-radius: 4px;">
+      <strong>⚠️ DATA POLICY NOTICE:</strong><br>
+      Please note that this is a <strong>test server</strong>. All records will be automatically deleted <strong>24 hours</strong> after creation via a MongoDB TTL index. The administrator reserves the right to remove any content deemed inappropriate immediately.
+    </div>
+
+tags:
+  - name: Projects
+    description: Operations related to project management
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local Development Server
+
+# 1. Apply security globally to the entire API
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /projects:
+    get:
+      tags:
+        - Projects
+      summary: Retrieve all projects
+      # Optional: Disable security specifically for GET if you want
+      security: []
+      responses:
+        '200':
+          description: A list of projects
+
+    post:
+      tags:
+        - Projects
+      summary: Create a new project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          description: Project created successfully
+        '400':
+          description: Validation failed (Zod)
+        '401':
+          description: Unauthorized - API Key missing or invalid
+
+  /projects/{projectId}:
+    get:
+      tags:
+        - Projects
+      summary: Get a single project by ID
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Project details retrieved
+        '404':
+          description: Project not found
+        '400':
+          description: Invalid ID format
+
+    patch:
+      tags:
+        - Projects
+      summary: Update project fields (Partial update)
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      requestBody:
+        description: Only include the fields you wish to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: Project updated successfully
+        '404':
+          description: Project not found
+        '400':
+          description: Invalid input or ID format
+        '401':
+          description: Unauthorized
+
+    delete:
+      tags:
+        - Projects
+      summary: Delete a project
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Project deleted successfully
+        '404':
+          description: Project not found
+        '401':
+          description: Unauthorized
+
+components:
+  # 2. Define the Security Scheme
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key # This must match req.headers['x-api-key'] in your middleware
+
+  parameters:
+    projectId:
+      name: projectId
+      in: path
+      description: Unique 24-character MongoDB ObjectId
+      required: true
+      schema:
+        type: string
+        example: '65942e5f8f12a34567890abc'
+
+  schemas:
+    Project:
+      type: object
+      required:
+        - title
+        - description
+      properties:
+        title:
+          type: string
+          minLength: 3
+          example: 'Build 2026 Portfolio'
+        description:
+          type: string
+          minLength: 10
+          example: 'Developing a MERN stack application with professional documentation.'
+        status:
+          type: string
+          enum: [todo, in-progress, completed]
+          default: todo
+        priority:
+          type: string
+          enum: [low, medium, high]
+          default: medium

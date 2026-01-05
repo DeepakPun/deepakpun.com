@@ -1,0 +1,45 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+package-lock.json
+
+# Environment variables (CRITICAL for MongoDB & AWS keys)
+.env
+.env.production
+.env.local
+.env.*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Docker
+.dockerignore
+# Do not ignore the Dockerfile itself, but ignore built layers if any
+docker-build/
+
+# Local Database data (if you run MongoDB locally)
+data/
+db/
+
+# Documentation / Build artifacts
+dist/
+build/
+.cache/
+
+# Coverage directory used by tools like Jest
+coverage/
