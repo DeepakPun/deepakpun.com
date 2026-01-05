@@ -16,7 +16,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "start": "nodemon index"
+    "dev": "nodemon index",
+    "start": "node index"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.51.4",

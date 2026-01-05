@@ -1,9 +1,9 @@
-import ComingSoon from './components/ComingSoon'
+import Landing from './components/Landing'
 function App() {
 
   return (
     <>
-      <ComingSoon />
+      <Landing />
     </>
   )
 }

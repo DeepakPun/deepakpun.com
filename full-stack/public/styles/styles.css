@@ -1,6 +1,11 @@
 :root {
   --primary-glow: rgba(37, 99, 235, 0.4);
+  --bs-body-font-family: 'Lato', sans-serif;
 }
+
+/* body {
+  font-family: 'Lato', sans-serif !important;
+} */
 
 .hero-section {
   background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(0, 0, 0, 1) 100%);
@@ -21,3 +26,21 @@
   box-shadow: 0 0 10px rgba(13, 110, 253, 0.25);
   background-color: #111;
 }
+
+.tracking-widest {
+  letter-spacing: 0.2em;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
+.text-purple {
+  color: #7952b3; 
+}
+

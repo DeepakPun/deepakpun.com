@@ -773,7 +773,7 @@ img {
 }
 
 .contact-item i {
-  color: var(--primary); /* Your blue or emerald color */
+  color: var(--primary); 
   width: 20px;
 }
 
