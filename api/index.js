@@ -8,7 +8,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import compression from 'compression'
 import rateLimit from 'express-rate-limit'
-import connectDB from './db/db.js'
+import connectDB from './database-connection/db.js'
 const port = process.env.PORT || 3000
 import projectRoutes from './routes/projectRoutes.js'
 import { errorHandler } from './middleware/errorMiddleware.js'
