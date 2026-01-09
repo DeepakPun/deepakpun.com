@@ -75,9 +75,10 @@ Thumbs.db
 **/.dockerignore
 **/Dockerfile.dev
 
+# Specifically track the minified version
 !landing-page/styles.min.css
-# Local styles.css file
-landing-page/styles.css
 
+# Ignore the source file
+landing-page/styles.css
 
 manage-docker.sh
