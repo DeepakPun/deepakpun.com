@@ -39,10 +39,9 @@ app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('dev')); // 'dev' is cleaner for console, 'combined' for logs
+  app.use(morgan('dev'))
 }
 
-// 2. HEALTH CHECK (Fastest possible response)
 app.get('/health', (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   res.status(dbStatus === 'connected' ? 200 : 503).json({
@@ -52,31 +51,30 @@ app.get('/health', (req, res) => {
   });
 });
 
-// 3. DOCUMENTATION (Before rate limiter so you don't block yourself while reading)
+// 5. ROUTES
+// This should come prior to / when using docker. 
+app.use('/api/v1/projects', portfolioGuard, projectRoutes)
+
 const swaggerDocument = YAML.load(path.join(import.meta.dirname, './config/swagger.yaml'))
 // import swaggerDocument from './swagger.json' with { type: 'json'}
-app.use('/api-docs', serve, setup(swaggerDocument, { customSiteTitle: "Projects API Docs" }))
+app.use('/', serve, setup(swaggerDocument, { customSiteTitle: "Projects API Docs" }))
+// app.use('/api-docs', serve, setup(swaggerDocument, { customSiteTitle: "Projects API Docs" }))
 
-// 4. RATE LIMITING (Apply to API logic only)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100, // Increased to 100 for better UX during testing
+  max: 100,
   message: 'Too many requests, please try again later.'
 })
 app.use('/api/', limiter)
 
-// 5. ROUTES
-app.use('/api/v1/projects', portfolioGuard, projectRoutes)
 
-// 6. 404 HANDLER (Must be after all routes)
 app.all('{*splat}', (req, res, next) => {
   const err = new Error(`Route ${req.originalUrl} not found`)
   err.status = 404
   next(err)
 })
 
-// 7. GLOBAL ERROR HANDLER (Must be the very last middleware)
-app.use(errorHandler) // Your imported handler
+app.use(errorHandler)
 app.use((err, req, res, next) => {
   const statusCode = err.status || 500
   res.status(statusCode).json({
@@ -86,7 +84,44 @@ app.use((err, req, res, next) => {
   })
 })
 
-// 8. SERVER START
-connectDB().then(() => {
-  app.listen(port, () => console.log(`🚀 API RUNNING IN ${process.env.NODE_ENV} MODE ON PORT ${port}`))
-})
+const startServer = () => {
+  const server = app.listen(port, () => {
+    console.log(`🚀 API RUNNING IN ${process.env.NODE_ENV} MODE ON PORT ${port}`)
+  })
+
+  const shutdown = (signal) => {
+    console.log(`\nReceived ${signal}. Closing HTTP server...`)
+
+    server.close(async () => {
+      console.log('HTTP server closed.')
+
+      try {
+        await mongoose.connection.close()
+        console.log('MongoDB connection closed.')
+        process.exit(0)
+      } catch (err) {
+        console.error('Error during MongoDB closure:', err)
+        process.exit(1)
+      }
+    })
+
+    setTimeout(() => {
+      console.error('Could not close connections in time, forceful shutdown')
+      process.exit(1)
+    }, 10000)
+  }
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'))
+  process.on('SIGINT', () => shutdown('SIGINT'))
+};
+
+connectDB()
+  .then(() => {
+    startServer()
+  })
+  .catch((err) => {
+    console.error('Database connection failed:', err)
+    process.exit(1)
+  })
+
+

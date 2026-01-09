@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="styles.min.css" />
     <script
       src="https://kit.fontawesome.com/51f52c5165.js"
       crossorigin="anonymous"
@@ -32,8 +32,7 @@
         <a href="#home" class="nav-logo">D<span>P.</span></a>
 
         <ul class="nav-links">
-          <li><a href="#tech-stacks">Tech Stack</a></li>
-          <li><a href="#aims">Aims</a></li>
+          <li><a href="#about">About</a></li> 
           <li><a href="#process">Process</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -50,14 +49,17 @@
             Focused on clean code, modern architecture, and user-centric design.
           </p>
           <div class="hero-buttons">
-            <a href="#home" class="btn btn-primary">Explore API</a>
-            <a href="#home" class="btn btn-secondary">
-              Launch Fullstack App
+            <!-- Test -->
+            <a href="http://localhost:3000" class="btn btn-primary" target="_blank">Explore API<i class="fa fa-arrow-right"></i></a>
+            <!-- <a href="#home" class="btn btn-primary">Explore API</a> -->
+            <a href="http://localhost:3001" class="btn btn-secondary" target="_blank">
+              Launch Fullstack App<i class="fa fa-arrow-right"></i>
               <!-- style="cursor: not-allowed" -->
               <!-- href="javascript:void(0)" -->
               <!-- <span class="badge-mini">Soon</span> -->
             </a>
-            <a href="#home" class="btn btn-tertiary"
+            <a href="http://localhost:5173" class="btn btn-tertiary"
+            target="_blank"
               >Frontend Specs<i class="fa fa-arrow-right"></i>
             </a>
           </div>
@@ -104,7 +106,6 @@
               <div class="step-icon"><i class="fa fa-check"></i></div>
               <div class="step-status">done</div>
             </div>
-            <i class="fa fa-arrow-right connector"></i>
           </div>
         </div>
         <div class="project-track">
@@ -123,7 +124,7 @@
             <div class="step status-in-progress">
               <div class="step-label">Develop</div>
               <div class="step-icon"><i class="fa fa-spinner fa-spin"></i></div>
-              <div class="step-status">in progress</div>
+              <div class="step-status">modular build</div>
             </div>
             <i class="fa fa-arrow-right connector"></i>
 
@@ -132,7 +133,6 @@
               <div class="step-icon"><i class="fa fa-check"></i></div>
               <div class="step-status">done</div>
             </div>
-            <i class="fa fa-arrow-right connector"></i>
           </div>
         </div>
         <div class="project-track">
@@ -160,7 +160,6 @@
               <div class="step-icon"><i class="fa fa-check"></i></div>
               <div class="step-status">done</div>
             </div>
-            <i class="fa fa-arrow-right connector"></i>
           </div>
         </div>
         <div class="project-track">
@@ -179,7 +178,7 @@
             <div class="step status-in-progress">
               <div class="step-label">Develop</div>
               <div class="step-icon"><i class="fa fa-spinner fa-spin"></i></div>
-              <div class="step-status">in progress</div>
+              <div class="step-status">modular build</div>
             </div>
             <i class="fa fa-arrow-right connector"></i>
 
@@ -188,7 +187,6 @@
               <div class="step-icon"><i class="fa fa-check"></i></div>
               <div class="step-status">done</div>
             </div>
-            <i class="fa fa-arrow-right connector"></i>
           </div>
         </div>
       </div>
@@ -209,126 +207,115 @@
       </div>
     </section>
 
-    <!-- Tech stack section -->
-    <section id="tech-stacks" class="skills-section">
-      <h2 class="section-title">Tech Stack</h2>
-
-      <div class="skills-grid">
-        <!-- Frontend Category -->
-        <div class="skill-card">
-          <div class="card-header">
-            <div class="skill-icon"><i class="fa fa-laptop-code"></i></div>
-            <h3>Frontend</h3>
-          </div>
-          <ul class="skill-list">
-            <li>HTML5 / CSS3</li>
-            <li>JavaScript (ES6+)</li>
-            <li>React</li>
-            <li>Tailwind CSS</li>
-          </ul>
-        </div>
-
-        <!-- Backend Category -->
-        <div class="skill-card">
-          <div class="card-header">
-            <div class="skill-icon"><i class="fa fa-gear"></i></div>
-            <h3>Backend</h3>
-          </div>
-          <ul class="skill-list">
-            <li>Node.js</li>
-            <li>Express</li>
-            <li>REST APIs</li>
-            <li>EJS Templates</li>
-          </ul>
-        </div>
-
-        <!-- Database & Tools -->
-        <div class="skill-card">
-          <div class="card-header">
-            <div class="skill-icon"><i class="fa fa-database"></i></div>
-            <h3>Database & Tools</h3>
-          </div>
-          <ul class="skill-list">
-            <li>MongoDB</li>
-            <li>Mongoose</li>
-            <li>Git / GitHub</li>
-            <li>Postman</li>
-          </ul>
-        </div>
-
-        <!-- DevOps & Cloud Category -->
-        <div class="skill-card">
-          <div class="card-header">
-            <div class="skill-icon"><i class="fa fa-cloud"></i></div>
-            <h3>DevOps & Cloud</h3>
-          </div>
-          <ul class="skill-list">
-            <li>Docker (Containerization)</li>
-            <li>GitHub Actions (CI/CD)</li>
-            <li>
-              AWS (EC2, S3, Amplify) <span class="status-tag">in progress</span>
-            </li>
-            <li>Vercel / Netlify Deployment</li>
-          </ul>
+  <section id="about" class="about-section">
+  <h2 class="section-title">About & Expertise</h2>
+  
+  <div class="about-container">
+  <!-- Left Card: Philosophy & Goals -->
+  <div class="about-card">
+    <h3 class="subsection-title">Philosophy & Goals</h3>
+    <div class="aims-list">
+      <div class="aim-item">
+        <i class="fa-solid fa-code"></i>
+        <div>
+          <h4>Project Architect</h4>
+          <p>Building high-performance ecosystems across diverse MERN stacks.</p>
         </div>
       </div>
-    </section>
-
-    <!-- Life aims section -->
-    <section id="aims" class="aims-section">
-      <h2 class="section-title">Life Aims & Philosophy</h2>
-      <div class="aims-container">
-        <!-- First Aim -->
-        <div class="aim-card">
-          <!-- <span class="aim-icon">&#60;&#47;&#62;</span> -->
-          <div class="card-header">
-            <span class="aim-icon"><i class="fa-solid fa-code"></i></span>
-            <h3>Building More Projects</h3>
-          </div>
-          <p>
-            I am planning to build multiple projects using different technology
-            stacks used in full stack development.
-          </p>
-        </div>
-        <!-- Second Aim -->
-        <div class="aim-card">
-          <div class="card-header">
-            <span class="aim-icon"><i class="fa-solid fa-globe"></i></span>
-            <h3>Digital Nomadism</h3>
-          </div>
-          <p>
-            Building a career that allows me to work from anywhere while
-            experiencing diverse cultures.
-          </p>
-        </div>
-        <!-- Third Aim -->
-        <div class="aim-card">
-          <div class="card-header">
-            <span class="aim-icon"><i class="fa-solid fa-brain"></i></span>
-            <h3>Continuous Learning</h3>
-          </div>
-          <p>
-            Mastering one new deep-tech concept every quarter (Currently: NextJS
-            & AWS).
-          </p>
-        </div>
-        <!-- Fourth Aim -->
-        <div class="aim-card">
-          <div class="card-header">
-            <span class="aim-icon"
-              ><i class="fa-solid fa-person-praying"></i
-            ></span>
-            <h3>Work-Life Harmony</h3>
-          </div>
-          <p>
-            Advocating for sustainable coding practices and healthy mental
-            wellness in tech.
-          </p>
+      <div class="aim-item">
+        <i class="fa-solid fa-globe"></i>
+        <div>
+          <h4>Global Native</h4>
+          <p>Engineering robust solutions while exploring cultures as a digital nomad.</p>
         </div>
       </div>
-    </section>
+      <div class="aim-item">
+        <i class="fa-solid fa-brain"></i>
+        <div>
+          <h4>Quarterly Mastery</h4>
+          <p>Deep-diving into new concepts. Currently: Next.js & AWS.</p>
+        </div>
+      </div>
+      <div class="aim-item">
+        <i class="fa-solid fa-person-praying"></i>
+        <div>
+          <h4>Sustainable Code</h4>
+          <p>Prioritizing work-life harmony and mental wellness in tech.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <section id="process" class="process">
+  <!-- Right Card: Toolbox -->
+  <div class="about-card">
+    <h3 class="subsection-title">Toolbox</h3>
+    <div class="stack-wrapper">
+      <!-- Frontend -->
+      <div class="stack-group">
+        <span class="stack-label">Frontend</span>
+        <div class="pill-container">
+          <span class="tech-pill">React</span>
+          <span class="tech-pill">JS (ES6+)</span>
+          <span class="tech-pill">Tailwind</span>
+          <span class="tech-pill">HTML/CSS</span>
+        </div>
+      </div>
+      <!-- Backend -->
+      <div class="stack-group">
+        <span class="stack-label">Backend</span>
+        <div class="pill-container">
+          <span class="tech-pill">Node.js</span>
+          <span class="tech-pill">Express</span>
+          <span class="tech-pill">REST APIs</span>
+          <span class="tech-pill">EJS</span>
+        </div>
+      </div>
+      <!-- Ops -->
+      <div class="stack-group">
+        <span class="stack-label">Database & Ops</span>
+        <div class="pill-container">
+          <span class="tech-pill">MongoDB</span>
+          <span class="tech-pill">Docker</span>
+          <span class="tech-pill">GitHub Actions</span>
+          <span class="tech-pill">AWS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+  <section id="process" class="process">
+  <h2 class="section-title">Engineering Logs</h2>
+  
+  <!-- Current Workflow Highlights -->
+  <div class="process-intro">
+    <p>
+      My architecture is engineered for <strong>continuous integration</strong>. 
+      <a href="#full-log" class="text-link">See the full log of my AWS/GitHub Actions setup &rarr;</a>
+    </p>
+  </div>
+
+  <div class="log-cards">
+    <div class="log-card">
+      <span class="badge">Workflow</span>
+      <h3>Breaking down into services</h3>
+      <p>Adopting a microservices architecture allows for the independent scaling and debugging of modular components, moving away from the complexities of a rigid monolithic system.</p>
+    </div>
+    <div class="log-card">
+      <span class="badge">Workflow</span>
+      <h3>Automating Deploys</h3>
+      <p>I’ve implemented a robust CI/CD pipeline using GitHub Actions that triggers seamless deployment to AWS environments upon every push to the integrated branches.</p>
+    </div>
+    <div class="log-card">
+      <span class="badge">Workflow</span>
+      <h3>Containerizing</h3>
+      <p>Each microservice is fully containerized, eliminating 'it works on my machine' issues and allowing for seamless, immutable deployments regardless of the host infrastructure.</p>
+    </div>
+  </div>
+</section>
+
+    <!-- <section id="process" class="process">
       <h2 class="section-title">Development Workflow</h2>
 
       <div class="process-intro">
@@ -342,7 +329,7 @@
           or the entire ecosystem—deploying instantly to
           <strong>AWS</strong> via GitHub Actions.
         </p>
-      </div>
+      </div> -->
 
       <div class="process-grid">
         <!-- Card 1: The Core Methodology (As Is) -->
@@ -417,6 +404,35 @@
         </div>
       </div>
     </section>
+
+    <section id="full-log" class="engineering-log">
+  <div class="main-card">
+    <h2 class="section-title">Deep Dive: The Infrastructure</h2>
+    
+    <div class="log-entry">
+      <h3>01. Deployment Architecture</h3>
+      <p>My current stack uses a <strong>decoupled microservices approach</strong>. These services are containerized and automatically deployed to AWS ECS. </p>
+      <!-- Insert Diagram Image Here -->
+    </div>
+
+    <div class="log-entry">
+      <h3>02. The CI/CD Logic</h3>
+      <p>I utilized <strong>GitHub Actions</strong> to automate the 'push-to-deploy' workflow. Every push triggers an automatic deployment. Code is pushed from the root and only deploys services that are modified.</p>
+      <div class="code-snippet-preview">
+        <code># .github/workflows/deploy.yml</code>
+      </div>
+    </div>
+
+    <div class="log-entry">
+      <h3>03. Performance Metrics</h3>
+      <ul class="stats-list">
+        <li><i class="fa fa-bolt"></i> Average Build Time: 48s</li>
+        <li><i class="fa fa-shield-halved"></i> Security: JWT with HttpOnly Cookies</li>
+        <li><i class="fa fa-magnifying-glass"></i> Monitoring: Winston & Morgan Logging</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
     <footer class="footer">
       <div class="footer-container">

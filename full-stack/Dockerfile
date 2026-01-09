@@ -37,7 +37,7 @@ COPY --chown=node:node . .
 USER node
 
 # 6. Port Documentation
-EXPOSE 3000
+EXPOSE 3001
 
 # 7. Health Check (Using wget because curl isn't in alpine by default)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \

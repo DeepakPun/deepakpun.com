@@ -1,33 +1,31 @@
-# Use the official Nginx image as base
-FROM nginx:alpine
+# 1. Use the most optimized 2026 image
+FROM nginx:stable-alpine-slim
 
-# Remove default nginx website
+# 2. Cleanup default assets
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy your static files to nginx html directory
+# 3. Copy your site content
 COPY . /usr/share/nginx/html/
 
-# Copy custom nginx configuration
+# 4. Copy your custom config 
+# (Ensure this file exists in your landing-page folder!)
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Create nginx cache directories
-RUN mkdir -p /var/cache/nginx/client_temp \
-    && mkdir -p /var/cache/nginx/proxy_temp \
-    && mkdir -p /var/cache/nginx/fastcgi_temp \
-    && mkdir -p /var/cache/nginx/uwsgi_temp \
-    && mkdir -p /var/cache/nginx/scgi_temp
+# 5. Security: Ensure the nginx user owns the web files
+# Note: Alpine's default nginx user is 'nginx'
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid
 
-# Set proper permissions
-RUN chown -R nginx:nginx /var/cache/nginx \
-    && chown -R nginx:nginx /usr/share/nginx/html \
-    && chmod -R 755 /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Add health check
+# 6. Health Check: Pings the server every 30s to ensure it's up
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
+    CMD wget -qO- http://localhost:80/ || exit 1
 
-# Start nginx
+EXPOSE 8080
+
+# Run as the unprivileged user for security
+USER nginx
+
 CMD ["nginx", "-g", "daemon off;"]

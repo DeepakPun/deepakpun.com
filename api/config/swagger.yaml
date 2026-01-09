@@ -4,17 +4,17 @@ info:
   version: 1.0.0
   description: |
     ### 🚀 MERN Stack API with Zod Validation
-    
-    This API serves as the backend for the **deepakpun.com** portfolio project.
-    
+
+    This API serves as the backend for the project management project.
+
     ---
-    
+
     #### 🔐 Authorization
     For **POST, PATCH, and DELETE** operations, click the **Authorize** button and use test api key:
     `deepak-pun-2026-demo`
-    
+
     ---
-    
+
     <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-left: 5px solid #ffeeba; border-radius: 4px;">
       <strong>⚠️ DATA POLICY NOTICE:</strong><br>
       Please note that this is a <strong>test server</strong>. All records will be automatically deleted <strong>24 hours</strong> after creation via a MongoDB TTL index. The administrator reserves the right to remove any content deemed inappropriate immediately.

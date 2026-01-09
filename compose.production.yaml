@@ -1,0 +1,68 @@
+# compose.production.yaml
+services:
+  landing-page:
+    restart: always
+    # Bind only to necessary ports; often 8080 remains internal behind a proxy
+    ports:
+      - '80:80'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost/']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+
+  api:
+    restart: always
+    environment:
+      NODE_ENV: production
+      # Use env vars for sensitive DB strings
+      MONGO_URI: ${PROD_MONGO_URI}
+    ports:
+      - '3000:3000'
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+
+  full-stack:
+    restart: always
+    environment:
+      NODE_ENV: production
+    # Use production-specific Dockerfile if applicable
+    build:
+      context: ./full-stack
+      dockerfile: Dockerfile.prod
+    ports:
+      - '3001:3001'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+
+  ui:
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - '8080:80' # Production UI often served via Nginx on port 80
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+
+# Named volumes for persistence (No bind mounts!)
+volumes:
+  db_data:

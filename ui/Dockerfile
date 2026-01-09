@@ -1,12 +1,14 @@
-FROM node:24-alpine
+# --- STAGE 1: Build ---
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
+# Install dependencies (better caching)
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
+# Copy source and build for production
 COPY . .
+RUN npm run build
 
-EXPOSE 5173
-
-CMD [ "npm", "run", "dev" ]
+CMD ["npm", "run", "preview"]

@@ -74,3 +74,10 @@ Thumbs.db
 # Docker
 **/.dockerignore
 **/Dockerfile.dev
+
+# Local styles.css file
+landing-page/styles.css
+
+!landing-page/styles.min.css
+
+manage-docker.sh
