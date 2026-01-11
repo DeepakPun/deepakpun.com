@@ -1,3 +1,20 @@
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.prod
+.env.prod.local
+.env.*.local
+
+# AWS credentials
+.aws/
+
+# Docker
+.docker/
+
+# Logs
+*.log
+npm-debug.log*
+
 # Node.js dependencies - ignores node_modules anywhere in the repo
 **/node_modules/
 

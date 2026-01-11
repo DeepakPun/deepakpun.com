@@ -10,8 +10,155 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+// const cors = require('cors')
+
+// const getCorsOrigins = () => {
+//   const nodeEnv = process.env.NODE_ENV || 'development'
+
+//   if (nodeEnv === 'production') {
+//     return [
+//       process.env.FRONTEND_URL || 'https://your-alb-url.com',
+//       process.env.UI_URL || 'https://your-ui-alb-url.com'
+//     ]
+//   } else {
+//     return [
+//       'http://localhost:3002',
+//       'http://localhost:5173',
+//       'http://localhost:5174',
+//       'http://localhost:3000',
+//       'http://localhost:8080'  // Landing page
+//     ]
+//   }
+// }
+
+// app.use(cors({
+//   origin: getCorsOrigins(),
+//   credentials: true
+// }))
+
 app.get('/', (req, res) => {
   res.render('landing')
+})
+
+app.get('/health', (req, res) => {
+  const uptime = process.uptime();
+  const hours = Math.floor(uptime / 3600);
+  const minutes = Math.floor((uptime % 3600) / 60);
+  const seconds = Math.floor(uptime % 60);
+
+  res.status(200).send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="refresh" content="30">
+      <title>Health Check | Fullstack App</title>
+      <style>
+        :root {
+          --bg-color: #0a0a0c;
+          --card-bg: #16161a;
+          --status-green: #10b981;
+          --text-main: #ffffff;
+          --text-dim: #94a3b8;
+        }
+
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-main);
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+        }
+
+        .card {
+          background: var(--card-bg);
+          padding: 2rem;
+          border-radius: 16px;
+          border: 1px solid #2d2d33;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+          width: 100%;
+          max-width: 400px;
+          text-align: center;
+        }
+
+        .status-badge {
+          display: inline-flex;
+          align-items: center;
+          background: rgba(16, 185, 129, 0.1);
+          color: var(--status-green);
+          padding: 0.5rem 1rem;
+          border-radius: 99px;
+          font-weight: 600;
+          font-size: 0.875rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .pulse {
+          height: 8px;
+          width: 8px;
+          background-color: var(--status-green);
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: 8px;
+          box-shadow: 0 0 0 0 rgba(16, 185, 129, 1);
+          animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+          70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        h1 { font-size: 1.25rem; margin: 0 0 1rem 0; color: var(--text-main); }
+        
+        .stat-grid {
+          display: grid;
+          gap: 1rem;
+          text-align: left;
+          margin-top: 1.5rem;
+          border-top: 1px solid #2d2d33;
+          padding-top: 1.5rem;
+        }
+
+        .stat-item { display: flex; justify-content: space-between; font-size: 0.9rem; }
+        .label { color: var(--text-dim); }
+        .value { font-family: "Fira Code", monospace; color: var(--text-main); }
+
+        .footer { font-size: 0.7rem; color: #4b5563; margin-top: 2rem; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <div class="status-badge">
+          <span class="pulse"></span> System Operational
+        </div>
+        <h1>Fullstack App</h1>
+        
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="label">Status</span>
+            <span class="value" style="color: var(--status-green)">OK 200</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Uptime</span>
+            <span class="value">${hours}h ${minutes}m ${seconds}s</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Region</span>
+            <span class="value">us-east-1</span>
+          </div>
+        </div>
+
+        <p class="footer">Last Checked: ${new Date().toLocaleTimeString()} UTC</p>
+      </div>
+    </body>
+    </html>
+  `)
 })
 
 app.listen(port, () => console.log(`App is running on port ${port}`))

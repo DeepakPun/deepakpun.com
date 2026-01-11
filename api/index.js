@@ -22,18 +22,40 @@ const app = express()
 // 1. GLOBAL MIDDLEWARES (Security & Compression first)
 app.use(helmet())
 app.use(compression())
+// Environment-based CORS configuration
+const getCorsOrigins = () => {
+  const nodeEnv = process.env.NODE_ENV || 'development';
+
+  if (nodeEnv === 'production') {
+    // Production origins (will be ALB URLs)
+    return [
+      process.env.FRONTEND_URL || 'https://your-alb-url.com',
+      process.env.UI_URL || 'https://your-ui-alb-url.com'
+    ];
+  } else {
+    // Development origins
+    return [
+      'http://localhost:3002',  // Docker UI service
+      'http://localhost:5173',  // Vite dev server
+      'http://localhost:5174',  // Vite dev server (alternative)
+      'http://localhost:3000'   // React dev server
+    ];
+  }
+};
+
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://deepakpun.com', 'https://www.deepakpun.com']
-    : [
-      'http://127.0.0.1:5173', 'http://127.0.0.1:5174',
-      'http://localhost:5173', 'http://localhost:5174'
-    ],
+  origin: getCorsOrigins(),
+  credentials: true,
+  optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'x-api-key'],
-  credentials: true,
-  optionsSuccessStatus: 200
 }
+
+app.use(cors(corsOptions));
+
+// debugging
+console.log('CORS enabled for origins:', getCorsOrigins())
+
 app.use(cors(corsOptions))
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
