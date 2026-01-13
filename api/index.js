@@ -1,6 +1,11 @@
 import dotenvx from '@dotenvx/dotenvx'
-// Needs to be changed before deployment
-dotenvx.config({ path: '.env.local' })
+if (process.env.NODE_ENV !== 'production') {
+  // Load .env.local only in development
+  dotenvx.config({ path: '.env.local' });
+} else {
+  // In production, use environment variables directly
+  console.log('Production mode: Using environment variables');
+}
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
@@ -24,7 +29,7 @@ app.use(compression())
 // Environment-based CORS configuration
 const getCorsOrigins = () => {
   const nodeEnv = process.env.NODE_ENV || 'development';
-  
+
   if (nodeEnv === 'production') {
     // Production origins (will be ALB URLs)
     return [
