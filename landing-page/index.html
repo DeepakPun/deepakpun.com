@@ -24,8 +24,62 @@
       content="Explore my MERN projects and professional API documentation."
     />
     <meta property="og:image" content="https://www.deepakpun.com" />
+    <style>
+      .alert-banner {
+    background-color: #fff3cd; /* Warning yellow */
+    color: #856404;
+    padding: 12px 20px;
+    border-bottom: 1px solid #ffeeba;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.alert-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.alert-content p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-icon {
+    margin-right: 10px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #856404;
+    position: absolute;
+    right: 0;
+    line-height: 1;
+}
+.close-btn:hover {
+    color: #533f03;
+}
+    </style>
   </head>
   <body id="home">
+    <!-- Alert -->
+    <div id="custom-alert" class="alert-banner">
+      <div class="alert-content">
+          <span class="alert-icon">⚠️</span>
+          <p>I am aware of some links being broken and working to fix it.</p>
+          <button class="close-btn" onclick="closeAlert()">&times;</button>
+      </div>
+    </div>
     <!-- Navbar -->
     <nav class="navbar">
       <div class="nav-container">
@@ -53,13 +107,13 @@
             <!-- dev -->
             <!-- <a href="http://localhost:3001" class="btn btn-primary" target="_blank">Explore API<i class="fa fa-arrow-right"></i></a> -->
             <!-- prod -->
-            <a href="www.deepakpun.com/api" class="btn btn-primary" target="_blank">Explore API<i class="fa fa-arrow-right"></i></a>
+            <a href="/api/" class="btn btn-primary" target="_blank">🚀 Explore API<i class="fa fa-arrow-right"></i></a>
             <!-- dev -->
             <!-- <a href="http://localhost:3002" class="btn btn-secondary" target="_blank"> -->
               <!-- Launch Fullstack App<i class="fa fa-arrow-right"></i> -->
             <!-- </a> -->
             <!-- prod -->
-            <a href="www.deepakpun.com/fullstack" class="btn btn-secondary" target="_blank">
+            <a href="/api/" class="btn btn-secondary" target="_blank">🚀
               Launch Fullstack App<i class="fa fa-arrow-right"></i>
             </a>
             <!-- dev -->
@@ -68,9 +122,7 @@
               >Frontend Specs<i class="fa fa-arrow-right"></i>
             </a> -->
             <!-- Prod -->
-            <a href="www.deepakpun.com/ui" class="btn btn-tertiary"
-            target="_blank"
-              >Frontend Specs<i class="fa fa-arrow-right"></i>
+          <a href="/api/" class="btn btn-tertiary" target="_blank">🚀 Frontend Specs<i class="fa fa-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -324,6 +376,13 @@
     </div>
   </div>
 </section>
+
+<script>
+    function closeAlert() {
+    document.getElementById('custom-alert').style.display = 'none';
+  }
+
+</script>
 
     <!-- <section id="process" class="process">
       <h2 class="section-title">Development Workflow</h2>
