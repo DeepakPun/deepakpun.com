@@ -1,0 +1,72 @@
+name: Deploy to DigitalOcean
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to DigitalOcean
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            echo "🚀 Starting deployment..."
+
+            # Navigate to project directory
+            cd /opt/deepakpun-portfolio
+
+            # Set environment variables for both databases
+            export MONGODB_URI_API="${{ secrets.MONGODB_URI_API }}"
+            export MONGODB_URI_FULLSTACK="${{ secrets.MONGODB_URI_FULLSTACK }}"
+
+            # Pull latest images
+            docker-compose pull
+
+            # Stop and remove existing containers
+            docker-compose down
+
+            # Start services with environment variables
+            docker-compose up -d
+
+            # Wait for services to start
+            sleep 30
+
+            # Check service health
+            echo "🧪 Checking service health..."
+
+            # Check each service
+            if curl -f http://localhost:8080 > /dev/null 2>&1; then
+              echo "✅ Main Portfolio: Healthy"
+            else
+              echo "❌ Main Portfolio: Unhealthy"
+            fi
+
+            if curl -f http://localhost:3000 > /dev/null 2>&1; then
+              echo "✅ UI Service: Healthy"
+            else
+              echo "❌ UI Service: Unhealthy"
+            fi
+
+            if curl -f http://localhost:3001/health > /dev/null 2>&1; then
+              echo "✅ API Service: Healthy (portfolio-api DB)"
+            else
+              echo "❌ API Service: Unhealthy"
+              echo "API Logs:"
+              docker logs portfolio-api --tail 20
+            fi
+
+            if curl -f http://localhost:3002/health > /dev/null 2>&1; then
+              echo "✅ Full-stack Service: Healthy (portfolio-fullstack DB)"
+            else
+              echo "❌ Full-stack Service: Unhealthy"
+              echo "Full-stack Logs:"
+              docker logs portfolio-fullstack --tail 20
+            fi
+
+            echo "✅ Deployment completed!"
