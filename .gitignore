@@ -39,3 +39,6 @@ shell-scripts
 *.sh/
 *.md/
 *.sh
+*.md
+compose.yaml.broken-backup
+steps.md

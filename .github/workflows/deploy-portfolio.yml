@@ -35,8 +35,8 @@ jobs:
         context: ./landing-page
         push: true
         tags: |
-          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-landing-page:latest
-          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-landing-page:${{ github.sha }}
+          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-landing:latest
+          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-landing:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -68,8 +68,8 @@ jobs:
         context: ./full-stack
         push: true
         tags: |
-          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-full-stack:latest
-          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-full-stack:${{ github.sha }}
+          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-fullstack:latest
+          ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-fullstack:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
