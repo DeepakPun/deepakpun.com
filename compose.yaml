@@ -1,59 +1,32 @@
-# compose.prod.yaml
 services:
   landing-page:
-    image: pundeepak/portfolio-landing:latest
-    build:
-      context: ./landing-page
-      dockerfile: Dockerfile
+    build: ./landing-page
+    image: pundeepak/portfolio-landing-page:latest
     ports:
-      - '8080:80'
-    networks:
-      - portfolio-network
-
-  full-stack:
-    image: pundeepak/portfolio-fullstack:latest
-    build:
-      context: ./full-stack
-      dockerfile: Dockerfile
-    ports:
-      - '3001:3001'
-    environment:
-      - NODE_ENV=production
-      - DB_URI=${PROD_MONGO_URI}
-      - PORT=3001
-      - FRONTEND_URL=${FRONTEND_URL}
-      - UI_URL=${UI_URL}
-    networks:
-      - portfolio-network
-
-  api:
-    image: pundeepak/portfolio-api:latest
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=production
-      - DB_URI=${PROD_MONGO_URI}
-      - PORT=3000
-      - FRONTEND_URL=${FRONTEND_URL}
-      - UI_URL=${UI_URL}
-    networks:
-      - portfolio-network
+      - "80:80"
+    restart: unless-stopped
 
   ui:
+    build: ./ui
     image: pundeepak/portfolio-ui:latest
-    build:
-      context: ./ui
-      dockerfile: Dockerfile
     ports:
-      - '3002:80'
-    environment:
-      - REACT_APP_API_URL=${API_URL}
-    networks:
-      - portfolio-network
+      - "3000:80"
+    restart: unless-stopped
 
-networks:
-  portfolio-network:
-    driver: bridge
+  api:
+    build: ./api
+    image: pundeepak/portfolio-api:latest
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  full-stack:
+    build: ./full-stack
+    image: pundeepak/portfolio-full-stack:latest
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped

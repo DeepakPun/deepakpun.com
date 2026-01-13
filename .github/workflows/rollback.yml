@@ -1,0 +1,115 @@
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker Tag to Rollback To'
+        required: true
+        default: 'previous'
+        type: string
+      
+      services:
+        description: 'Services to Rollback'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - landing-page
+        - ui
+        - api
+        - full-stack
+
+env:
+  DOCKER_HUB_USERNAME: pundeepak
+
+jobs:
+  rollback:
+    name: Rollback Services
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Display Rollback Info
+      run: |
+        echo "🔄 Rollback Started"
+        echo "Tag: ${{ github.event.inputs.tag }}"
+        echo "Services: ${{ github.event.inputs.services }}"
+        echo "Triggered by: ${{ github.actor }}"
+
+    - name: Rollback on DigitalOcean
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          echo "🔄 Starting rollback process..."
+          
+          cd /opt/deepakpun-portfolio
+          
+          echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+          
+          TAG="${{ github.event.inputs.tag }}"
+          SERVICES="${{ github.event.inputs.services }}"
+          
+          # If tag is 'previous', try to find the previous tag
+          if [ "$TAG" = "previous" ]; then
+            echo "🔍 Finding previous deployment tag..."
+            # This is a simplified approach - in production you'd want a more robust tag management
+            TAG="manual-$((${{ github.run_number }} - 1))"
+            echo "Using tag: $TAG"
+          fi
+          
+          # Update compose file to use specific tag
+          if [ "$SERVICES" = "all" ]; then
+            echo "🔄 Rolling back all services to tag: $TAG"
+            
+            # Create temporary compose file with specific tags
+            sed "s/:latest/:$TAG/g" compose.yaml > compose-rollback.yaml
+            
+            docker compose -f compose-rollback.yaml pull
+            docker compose down
+            docker compose -f compose-rollback.yaml up -d
+            
+          else
+            echo "🔄 Rolling back $SERVICES to tag: $TAG"
+            
+            # Rollback specific service
+            docker pull ${{ env.DOCKER_HUB_USERNAME }}/portfolio-$SERVICES:$TAG
+            docker compose stop $SERVICES
+            
+            # Update the service with specific tag
+            docker tag ${{ env.DOCKER_HUB_USERNAME }}/portfolio-$SERVICES:$TAG ${{ env.DOCKER_HUB_USERNAME }}/portfolio-$SERVICES:latest
+            
+            docker compose up -d $SERVICES
+          fi
+          
+          sleep 20
+          docker compose ps
+          
+          echo "✅ Rollback complete!"
+
+    - name: Verify Rollback
+      run: |
+        echo "🧪 Verifying rollback..."
+        sleep 30
+        
+        # Basic health check after rollback
+        if curl -f -s --max-time 10 "http://${{ secrets.DO_HOST }}" > /dev/null; then
+          echo "✅ Main site is responding after rollback"
+        else
+          echo "❌ Main site not responding after rollback"
+          exit 1
+        fi
+        
+        echo "✅ Rollback verification complete"
+
+    - name: Notify Rollback Status
+      run: |
+        echo "📢 Rollback Notification"
+        echo "Status: ✅ Success"
+        echo "Tag: ${{ github.event.inputs.tag }}"
+        echo "Services: ${{ github.event.inputs.services }}"
+        echo "Rolled back by: ${{ github.actor }}"
+        echo "Time: $(date)"

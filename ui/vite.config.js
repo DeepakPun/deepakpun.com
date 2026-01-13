@@ -11,13 +11,16 @@ export default defineConfig({
   ],
   preview: {
     host: '0.0.0.0',
-    port: 3000
+    port: 3000,
   },
   server: {
     host: '0.0.0.0',
     port: 3000,
+    strictPort: true,
     watch: {
-      usePolling: true
+      usePolling: true,
+      interval: 1000
     }
+    // HMR will automatically use the same port
   }
 })

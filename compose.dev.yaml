@@ -1,0 +1,61 @@
+services:
+  landing-page:
+    build:
+      context: ./landing-page
+      dockerfile: Dockerfile.dev
+    ports:
+      - "80:80"
+    networks:
+      - portfolio-network
+    volumes:
+      - ./landing-page:/usr/share/nginx/html
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./ui/.env.local
+    volumes:
+      - ./ui:/app
+      - /app/node_modules
+    networks:
+      - portfolio-network
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./api/.env.local
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    networks:
+      - portfolio-network
+    restart: unless-stopped
+
+  full-stack:
+    build:
+      context: ./full-stack
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3002:3002"
+    env_file:
+      - ./full-stack/.env.local
+    volumes:
+      - ./full-stack:/app
+      - /app/node_modules
+    networks:
+      - portfolio-network
+    restart: unless-stopped
+
+networks:
+  portfolio-network:
+    driver: bridge
