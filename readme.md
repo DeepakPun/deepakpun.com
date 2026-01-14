@@ -4,7 +4,8 @@ A modern, multi-service portfolio website showcasing my projects and skills as a
 
 ## 🌐 Live Website
 
-**Main Portfolio:** [deepakpun.com](https://deepakpun.com)
+<!-- **Main Portfolio:** [deepakpun.com](www.deepakpun.com) -->
+**Main Portfolio:** <a href="https://deepakpun.com" target="_blank">deepakpun.com</a>
 
 ## 🏗️ Architecture
 
