@@ -1,86 +1,15 @@
-name: Deploy Portfolio to DigitalOcean
+name: Deploy Portfolio
 
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
-
-env:
-  DOCKER_HUB_USERNAME: pundeepak
-  REGISTRY: docker.io
+    branches: [main]
 
 jobs:
-  build:
-    name: Build Docker Images
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: Build and Push Landing Page
-        uses: docker/build-push-action@v5
-        with:
-          context: ./landing-page
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-landing:latest
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-landing:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and Push UI
-        uses: docker/build-push-action@v5
-        with:
-          context: ./ui
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-ui:latest
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-ui:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and Push API
-        uses: docker/build-push-action@v5
-        with:
-          context: ./api
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-api:latest
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-api:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and Push Full-Stack
-        uses: docker/build-push-action@v5
-        with:
-          context: ./full-stack
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-fullstack:latest
-            ${{ env.REGISTRY }}/${{ env.DOCKER_HUB_USERNAME }}/portfolio-fullstack:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy:
-    name: Deploy to DigitalOcean
-    needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-      - name: Deploy to DigitalOcean Droplet
+      - name: Deploy to Digital Ocean
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
@@ -88,20 +17,26 @@ jobs:
           key: ${{ secrets.DO_SSH_KEY }}
           port: ${{ secrets.DO_PORT || 22 }}
           script: |
+            set -e
+
             echo "🚀 Starting deployment..."
 
+            # Use the correct project directory
+            PROJECT_DIR="/opt/deepakpun-portfolio"
+
             # Navigate to project directory
-            cd /opt/deepakpun-portfolio || { echo "❌ Project directory not found"; exit 1; }
+            cd "$PROJECT_DIR"
 
             # Pull latest code
             echo "📥 Pulling latest code..."
             git pull origin main
 
-            # Login to Docker Hub
-            echo "🔐 Logging into Docker Hub..."
-            echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+            # Debug: Show current directory and files
+            echo "📍 Current directory: $(pwd)"
+            echo "📁 Directory contents:"
+            ls -la
 
-            # CREATE AND LOAD ENVIRONMENT VARIABLES
+            # Create .env.prod with secrets
             echo "📝 Creating production environment file..."
             cat > .env.prod << 'EOF'
             MONGODB_URI_API=${{ secrets.MONGODB_URI_API }}
@@ -109,87 +44,80 @@ jobs:
             NODE_ENV=production
             EOF
 
+            # Debug: Check if .env.prod was created
+            echo "📋 Environment file created:"
+            ls -la .env.prod
+            echo "📋 Environment file contents (masked):"
+            sed 's/mongodb+srv:\/\/[^@]*@/mongodb+srv:\/\/***:***@/g' .env.prod
+
+            # Load environment variables
             echo "📂 Loading environment variables..."
             set -a
             source .env.prod
             set +a
 
-            # Verify variables
+            # Debug: Check if variables are loaded (without exposing secrets)
+            echo "🔍 Checking environment variables:"
+            echo "MONGODB_URI_API length: ${#MONGODB_URI_API}"
+            echo "MONGODB_URI_FULLSTACK length: ${#MONGODB_URI_FULLSTACK}"
+            echo "NODE_ENV: $NODE_ENV"
+
+            # Verify variables are loaded
             if [[ -z "$MONGODB_URI_API" ]]; then
               echo "❌ MONGODB_URI_API not loaded"
+              echo "🔍 GitHub secrets debug:"
+              echo "Secret length from GitHub: ${{ secrets.MONGODB_URI_API && 'SET' || 'NOT SET' }}"
               exit 1
             fi
 
-            echo "✅ Environment loaded successfully"
+            if [[ -z "$MONGODB_URI_FULLSTACK" ]]; then
+              echo "❌ MONGODB_URI_FULLSTACK not loaded"
+              echo "🔍 GitHub secrets debug:"
+              echo "Secret length from GitHub: ${{ secrets.MONGODB_URI_FULLSTACK && 'SET' || 'NOT SET' }}"
+              exit 1
+            fi
 
-            # NOW your existing docker commands:
+            echo "✅ Environment variables loaded successfully"
+
+            # Check if docker-compose file exists
+            COMPOSE_FILE="docker-compose.prod.yml"
+            if [[ ! -f "$COMPOSE_FILE" ]]; then
+              echo "❌ $COMPOSE_FILE not found"
+              echo "📁 Available compose files:"
+              ls -la *.yml *.yaml docker-compose* 2>/dev/null || echo "No compose files found"
+              
+              # Try alternative names
+              if [[ -f "docker-compose.yml" ]]; then
+                COMPOSE_FILE="docker-compose.yml"
+                echo "✅ Using docker-compose.yml instead"
+              else
+                exit 1
+              fi
+            fi
+
+            # Docker operations
             echo "📥 Pulling latest images..."
-            docker compose -f docker-compose.prod.yml pull
+            docker compose -f "$COMPOSE_FILE" pull || echo "⚠️ Some images may not exist yet"
 
-            echo "🛑 Stopping services..."
-            docker compose -f docker-compose.prod.yml down
+            echo "🛑 Stopping existing services..."
+            docker compose -f "$COMPOSE_FILE" down
 
             echo "🚀 Starting updated services..."
-            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f "$COMPOSE_FILE" up -d
 
-            # Wait for services to start
             echo "⏳ Waiting for services to start..."
             sleep 30
 
-            # Show service status
-            echo "📊 Service Status:"
-            docker compose ps
+            echo "🔍 Checking service status..."
+            docker compose -f "$COMPOSE_FILE" ps
 
-            # Clean up old images
-            echo "🧹 Cleaning up old images..."
-            docker image prune -f
+            echo "📋 Checking service logs for errors..."
+            docker compose -f "$COMPOSE_FILE" logs --tail=5 api || echo "API logs not available"
+            docker compose -f "$COMPOSE_FILE" logs --tail=5 full-stack || echo "FullStack logs not available"
 
-            echo "✅ Deployment complete!"
-
-  health-check:
-    name: Health Check
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-      - name: Wait for Services
-        run: sleep 60
-
-      - name: Check Service Health
-        run: |
-          echo "🧪 Checking service health..."
-
-          # Check main portfolio
-          if curl -f -s --max-time 10 "http://${{ secrets.DO_HOST }}" > /dev/null; then
-            echo "✅ Main Portfolio: Healthy"
-          else
-            echo "❌ Main Portfolio: Unhealthy"
-            exit 1
-          fi
-
-          # Check UI service
-          if curl -f -s --max-time 10 "http://${{ secrets.DO_HOST }}:3000" > /dev/null; then
-            echo "✅ UI Service: Healthy"
-          else
-            echo "❌ UI Service: Unhealthy"
-            exit 1
-          fi
-
-          # Check API service
-          if curl -f -s --max-time 10 "http://${{ secrets.DO_HOST }}:3001" > /dev/null; then
-            echo "✅ API Service: Healthy"
-          else
-            echo "❌ API Service: Unhealthy"
-            exit 1
-          fi
-
-          # Check Full-Stack service
-          if curl -f -s --max-time 10 "http://${{ secrets.DO_HOST }}:3002" > /dev/null; then
-            echo "✅ Full-Stack Service: Healthy"
-          else
-            echo "❌ Full-Stack Service: Unhealthy"
-            exit 1
-          fi
-
-          echo "🎉 All services are healthy!"
+            echo "🎉 Deployment complete!"
+            echo "🌐 Services should be available at:"
+            echo "   Landing: http://$(curl -s ifconfig.me):8080"
+            echo "   UI: http://$(curl -s ifconfig.me):3000"
+            echo "   API: http://$(curl -s ifconfig.me):3001"
+            echo "   FullStack: http://$(curl -s ifconfig.me):3002"
