@@ -1,3 +1,4 @@
+# .github/workflows/deploy-portfolio.yml
 name: Deploy Portfolio
 
 on:
@@ -16,39 +17,26 @@ jobs:
           username: ${{ secrets.DO_USERNAME }}
           key: ${{ secrets.DO_SSH_KEY }}
           port: ${{ secrets.DO_PORT || 22 }}
+          envs: MONGODB_URI_API,MONGODB_URI_FULLSTACK,DOCKER_USERNAME,DOCKER_PASSWORD
           script: |
             set -e
 
             echo "🚀 Starting deployment..."
 
-            # Use the correct project directory
-            PROJECT_DIR="/opt/deepakpun-portfolio"
-
-            # Navigate to project directory
-            cd "$PROJECT_DIR"
+            # Navigate to your project directory
+            cd /opt/deepakpun-portfolio
 
             # Pull latest code
             echo "📥 Pulling latest code..."
             git pull origin main
 
-            # Debug: Show current directory and files
-            echo "📍 Current directory: $(pwd)"
-            echo "📁 Directory contents:"
-            ls -la
-
-            # Create .env.prod with secrets
+            # Create .env.prod using environment variables (no shell interpretation)
             echo "📝 Creating production environment file..."
-            cat > .env.prod << 'EOF'
-            MONGODB_URI_API=${{ secrets.MONGODB_URI_API }}
-            MONGODB_URI_FULLSTACK=${{ secrets.MONGODB_URI_FULLSTACK }}
+            cat > .env.prod << EOF
+            MONGODB_URI_API=${MONGODB_URI_API}
+            MONGODB_URI_FULLSTACK=${MONGODB_URI_FULLSTACK}
             NODE_ENV=production
             EOF
-
-            # Debug: Check if .env.prod was created
-            echo "📋 Environment file created:"
-            ls -la .env.prod
-            echo "📋 Environment file contents (masked):"
-            sed 's/mongodb+srv:\/\/[^@]*@/mongodb+srv:\/\/***:***@/g' .env.prod
 
             # Load environment variables
             echo "📂 Loading environment variables..."
@@ -56,64 +44,47 @@ jobs:
             source .env.prod
             set +a
 
-            # Debug: Check if variables are loaded (without exposing secrets)
+            # Debug: Check if variables are loaded
             echo "🔍 Checking environment variables:"
             echo "MONGODB_URI_API length: ${#MONGODB_URI_API}"
             echo "MONGODB_URI_FULLSTACK length: ${#MONGODB_URI_FULLSTACK}"
             echo "NODE_ENV: $NODE_ENV"
 
             # Verify variables are loaded
-            if [[ -z "$MONGODB_URI_API" ]]; then
-              echo "❌ MONGODB_URI_API not loaded"
-              echo "🔍 GitHub secrets debug:"
-              echo "Secret length from GitHub: ${{ secrets.MONGODB_URI_API && 'SET' || 'NOT SET' }}"
+            if [[ ${#MONGODB_URI_API} -lt 10 ]]; then
+              echo "❌ MONGODB_URI_API too short or empty"
               exit 1
             fi
 
-            if [[ -z "$MONGODB_URI_FULLSTACK" ]]; then
-              echo "❌ MONGODB_URI_FULLSTACK not loaded"
-              echo "🔍 GitHub secrets debug:"
-              echo "Secret length from GitHub: ${{ secrets.MONGODB_URI_FULLSTACK && 'SET' || 'NOT SET' }}"
+            if [[ ${#MONGODB_URI_FULLSTACK} -lt 10 ]]; then
+              echo "❌ MONGODB_URI_FULLSTACK too short or empty"
               exit 1
             fi
 
             echo "✅ Environment variables loaded successfully"
 
-            # Check if docker-compose file exists
-            COMPOSE_FILE="docker-compose.prod.yml"
-            if [[ ! -f "$COMPOSE_FILE" ]]; then
-              echo "❌ $COMPOSE_FILE not found"
-              echo "📁 Available compose files:"
-              ls -la *.yml *.yaml docker-compose* 2>/dev/null || echo "No compose files found"
-              
-              # Try alternative names
-              if [[ -f "docker-compose.yml" ]]; then
-                COMPOSE_FILE="docker-compose.yml"
-                echo "✅ Using docker-compose.yml instead"
-              else
-                exit 1
-              fi
-            fi
-
             # Docker operations
+            echo "🐳 Logging into Docker Hub..."
+            echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+
             echo "📥 Pulling latest images..."
-            docker compose -f "$COMPOSE_FILE" pull || echo "⚠️ Some images may not exist yet"
+            docker compose -f docker-compose.prod.yml pull
 
             echo "🛑 Stopping existing services..."
-            docker compose -f "$COMPOSE_FILE" down
+            docker compose -f docker-compose.prod.yml down
 
             echo "🚀 Starting updated services..."
-            docker compose -f "$COMPOSE_FILE" up -d
+            docker compose -f docker-compose.prod.yml up -d
 
             echo "⏳ Waiting for services to start..."
             sleep 30
 
             echo "🔍 Checking service status..."
-            docker compose -f "$COMPOSE_FILE" ps
+            docker compose -f docker-compose.prod.yml ps
 
-            echo "📋 Checking service logs for errors..."
-            docker compose -f "$COMPOSE_FILE" logs --tail=5 api || echo "API logs not available"
-            docker compose -f "$COMPOSE_FILE" logs --tail=5 full-stack || echo "FullStack logs not available"
+            echo "📋 Checking service logs for MongoDB connection..."
+            docker compose -f docker-compose.prod.yml logs --tail=5 api || echo "API logs not available"
+            docker compose -f docker-compose.prod.yml logs --tail=5 full-stack || echo "FullStack logs not available"
 
             echo "🎉 Deployment complete!"
             echo "🌐 Services should be available at:"
@@ -121,3 +92,8 @@ jobs:
             echo "   UI: http://$(curl -s ifconfig.me):3000"
             echo "   API: http://$(curl -s ifconfig.me):3001"
             echo "   FullStack: http://$(curl -s ifconfig.me):3002"
+        env:
+          MONGODB_URI_API: ${{ secrets.MONGODB_URI_API }}
+          MONGODB_URI_FULLSTACK: ${{ secrets.MONGODB_URI_FULLSTACK }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
