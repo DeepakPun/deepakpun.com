@@ -1,4 +1,5 @@
-FROM node:24-bullseye-slim AS build
+FROM node:24 AS build
+
 WORKDIR /app
 
 # Copy package files
@@ -13,28 +14,25 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Production stage
+# Production stage with nginx
 FROM nginx:alpine
 
-# Copy custom nginx site configuration
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+# Copy custom nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy built React app
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Remove the default nginx config that might conflict
-RUN rm -f /etc/nginx/conf.d/default.conf.bak
+# Create health check file
+RUN echo "OK" > /usr/share/nginx/html/health
 
-# Create a simple index.html if build failed (fallback)
-RUN test -f /usr/share/nginx/html/index.html || echo '<h1>React App Build Error</h1>' > /usr/share/nginx/html/index.html
+# Ensure proper permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html
 
-# Expose port
 EXPOSE 3000
 
 # Health check
-# HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-#   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+#   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
-
