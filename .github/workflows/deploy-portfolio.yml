@@ -5,7 +5,9 @@ on:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  # 🏗️ PHASE 1: BUILD AND PUSH DOCKER IMAGES
+  build:
+    name: Build and Push Images
     runs-on: ubuntu-latest
 
     steps:
@@ -20,76 +22,135 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          echo "🏗️ Building and pushing Docker images..."
+          echo "🏗️ Starting build phase..."
+          echo "📦 Building images for user: ${{ secrets.DOCKER_HUB_USERNAME }}"
 
           # Build and push Landing Page
           if [[ -d "landing-page" ]]; then
             echo "📦 Building Landing Page..."
             cd landing-page
-            docker build -t pundeepak/portfolio-landing:latest .
-            docker push pundeepak/portfolio-landing:latest
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-landing:latest .
+            docker push ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-landing:latest
+            echo "✅ Landing Page pushed successfully"
             cd ..
+          else
+            echo "⚠️ Landing Page directory not found"
           fi
 
           # Build and push UI
           if [[ -d "ui" ]]; then
             echo "📦 Building UI..."
             cd ui
-            docker build -t pundeepak/portfolio-ui:latest .
-            docker push pundeepak/portfolio-ui:latest
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-ui:latest .
+            docker push ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-ui:latest
+            echo "✅ UI pushed successfully"
             cd ..
+          else
+            echo "⚠️ UI directory not found"
           fi
 
           # Build and push API
           if [[ -d "api" ]]; then
             echo "📦 Building API..."
             cd api
-            docker build -t pundeepak/portfolio-api:latest .
-            docker push pundeepak/portfolio-api:latest
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-api:latest .
+            docker push ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-api:latest
+            echo "✅ API pushed successfully"
             cd ..
+          else
+            echo "⚠️ API directory not found"
           fi
 
           # Build and push FullStack
           if [[ -d "full-stack" ]]; then
             echo "📦 Building FullStack..."
             cd full-stack
-            docker build -t pundeepak/portfolio-fullstack:latest .
-            docker push pundeepak/portfolio-fullstack:latest
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-fullstack:latest .
+            docker push ${{ secrets.DOCKER_HUB_USERNAME }}/portfolio-fullstack:latest
+            echo "✅ FullStack pushed successfully"
             cd ..
+          else
+            echo "⚠️ FullStack directory not found"
           fi
 
-          echo "✅ All images built and pushed successfully!"
+          echo "🎉 BUILD PHASE COMPLETE!"
+          echo "📋 All images have been built and pushed to Docker Hub"
 
-      - name: Deploy to Digital Ocean
+  # 🚀 PHASE 2: DEPLOY TO DIGITAL OCEAN
+  deploy:
+    name: Deploy to Digital Ocean
+    runs-on: ubuntu-latest
+    needs: build # 🔗 This job waits for build to complete
+
+    steps:
+      - name: Deploy to Digital Ocean Droplet
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
           key: ${{ secrets.DO_SSH_KEY }}
-          port: ${{ secrets.DO_PORT || 22 }}
-          envs: MONGODB_URI_API,MONGODB_URI_FULLSTACK,DOCKER_HUB_TOKEN
+          envs: MONGODB_URI_API,MONGODB_URI_FULLSTACK,DOCKER_HUB_TOKEN,DOCKER_HUB_USERNAME
           script: |
             set -e
 
-            echo "🚀 Starting deployment..."
+            echo "🚀 STARTING DEPLOYMENT PHASE..."
+            echo "📍 Deploying to: $(hostname)"
+            echo "⏰ Deployment started at: $(date)"
 
             # Navigate to your project directory
             cd /opt/deepakpun-portfolio
 
+            # NUCLEAR CLEANUP OPTION 💥
+            echo "💥 Phase 1: Nuclear container cleanup..."
+            docker stop $(docker ps -q) || echo "No containers to stop"
+            docker rm $(docker ps -aq) || echo "No containers to remove"
+            docker system prune -f || echo "System already clean"
+
             # Pull latest code
-            echo "📥 Pulling latest code..."
+            echo "📥 Phase 2: Pulling latest code..."
             git pull origin main
 
+            # AGGRESSIVE CONTAINER CLEANUP
+            echo "🧹 Phase 3: Performing aggressive container cleanup..."
+
+            # Stop and remove ALL portfolio-related containers
+            echo "🛑 Stopping all portfolio containers..."
+            docker ps -a --filter "name=portfolio" --format "{{.Names}}" | xargs -r docker stop || echo "No portfolio containers to stop"
+            docker ps -a --filter "name=portfolio" --format "{{.Names}}" | xargs -r docker rm || echo "No portfolio containers to remove"
+
+            # Stop and remove containers by project name pattern
+            docker ps -a --filter "name=deepakpun-portfolio" --format "{{.Names}}" | xargs -r docker stop || echo "No deepakpun-portfolio containers to stop"
+            docker ps -a --filter "name=deepakpun-portfolio" --format "{{.Names}}" | xargs -r docker rm || echo "No deepakpun-portfolio containers to remove"
+
+            # Force stop containers using our ports
+            echo "🔌 Freeing up ports..."
+            docker ps --filter "publish=8080" --format "{{.Names}}" | xargs -r docker stop || echo "Port 8080 free"
+            docker ps --filter "publish=3000" --format "{{.Names}}" | xargs -r docker stop || echo "Port 3000 free"
+            docker ps --filter "publish=3001" --format "{{.Names}}" | xargs -r docker stop || echo "Port 3001 free"
+            docker ps --filter "publish=3002" --format "{{.Names}}" | xargs -r docker stop || echo "Port 3002 free"
+
+            # Use docker-compose to ensure clean shutdown
+            echo "🛑 Docker Compose cleanup..."
+            docker compose -f docker-compose.prod.yml down --remove-orphans || echo "No compose services to stop"
+
+            # Remove any dangling containers
+            docker container prune -f || echo "No containers to prune"
+
+            # Show current running containers
+            echo "📋 Current running containers after cleanup:"
+            docker ps
+
             # Create .env.prod using environment variables
-            echo "📝 Creating production environment file..."
+            echo "📝 Phase 4: Creating production environment file..."
             cat > .env.prod << EOF
             MONGODB_URI_API=${MONGODB_URI_API}
             MONGODB_URI_FULLSTACK=${MONGODB_URI_FULLSTACK}
             NODE_ENV=production
+            DOCKER_USERNAME=${DOCKER_HUB_USERNAME}
             EOF
 
             # Load environment variables
-            echo "📂 Loading environment variables..."
+            echo "📂 Phase 5: Loading environment variables..."
             set -a
             source .env.prod
             set +a
@@ -99,6 +160,7 @@ jobs:
             echo "MONGODB_URI_API length: ${#MONGODB_URI_API}"
             echo "MONGODB_URI_FULLSTACK length: ${#MONGODB_URI_FULLSTACK}"
             echo "NODE_ENV: $NODE_ENV"
+            echo "DOCKER_USERNAME: ${DOCKER_HUB_USERNAME}"
 
             # Verify variables are loaded
             if [[ ${#MONGODB_URI_API} -lt 10 ]]; then
@@ -111,38 +173,47 @@ jobs:
               exit 1
             fi
 
+            if [[ -z "${DOCKER_HUB_USERNAME}" ]]; then
+              echo "❌ DOCKER_HUB_USERNAME not loaded"
+              exit 1
+            fi
+
             echo "✅ Environment variables loaded successfully"
 
             # Docker operations
-            echo "🐳 Logging into Docker Hub..."
-            echo "${DOCKER_HUB_TOKEN}" | docker login -u pundeepak --password-stdin
+            echo "🐳 Phase 6: Logging into Docker Hub..."
+            echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_USERNAME}" --password-stdin
 
-            echo "📥 Pulling latest images..."
-            docker compose -f compose.yaml pull
+            echo "📥 Phase 7: Pulling latest images from Docker Hub..."
+            docker compose -f docker-compose.prod.yml pull
 
-            echo "🛑 Stopping existing services..."
-            docker compose -f compose.yaml down
+            # Final cleanup before starting
+            echo "🧹 Phase 8: Final cleanup before starting..."
+            docker compose -f docker-compose.prod.yml down --remove-orphans
 
-            echo "🚀 Starting updated services..."
-            docker compose -f compose.yaml up -d
+            echo "🚀 Phase 9: Starting updated services..."
+            docker compose -f docker-compose.prod.yml up -d
 
-            echo "⏳ Waiting for services to start..."
+            echo "⏳ Phase 10: Waiting for services to start..."
             sleep 30
 
-            echo "🔍 Checking service status..."
-            docker compose -f compose.yaml ps
+            echo "🔍 Phase 11: Checking service status..."
+            docker compose -f docker-compose.prod.yml ps
 
-            echo "📋 Checking service logs for MongoDB connection..."
-            docker compose -f compose.yaml logs --tail=5 api || echo "API logs not available"
-            docker compose -f compose.yaml logs --tail=5 full-stack || echo "FullStack logs not available"
+            echo "📋 Phase 12: Checking service logs for MongoDB connection..."
+            docker compose -f docker-compose.prod.yml logs --tail=5 api || echo "API logs not available"
+            docker compose -f docker-compose.prod.yml logs --tail=5 full-stack || echo "FullStack logs not available"
 
-            echo "🎉 Deployment complete!"
+            echo "🎉 DEPLOYMENT PHASE COMPLETE!"
+            echo "⏰ Deployment finished at: $(date)"
             echo "🌐 Services should be available at:"
             echo "   Landing: http://$(curl -s ifconfig.me):8080"
             echo "   UI: http://$(curl -s ifconfig.me):3000"
             echo "   API: http://$(curl -s ifconfig.me):3001"
             echo "   FullStack: http://$(curl -s ifconfig.me):3002"
+
         env:
           MONGODB_URI_API: ${{ secrets.MONGODB_URI_API }}
           MONGODB_URI_FULLSTACK: ${{ secrets.MONGODB_URI_FULLSTACK }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
