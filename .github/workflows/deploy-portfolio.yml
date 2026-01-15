@@ -131,7 +131,7 @@ jobs:
 
             # Use docker-compose to ensure clean shutdown
             echo "🛑 Docker Compose cleanup..."
-            docker compose -f docker-compose.prod.yml down --remove-orphans || echo "No compose services to stop"
+            docker compose -f compose.yaml down --remove-orphans || echo "No compose services to stop"
 
             # Remove any dangling containers
             docker container prune -f || echo "No containers to prune"
@@ -185,24 +185,24 @@ jobs:
             echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_USERNAME}" --password-stdin
 
             echo "📥 Phase 7: Pulling latest images from Docker Hub..."
-            docker compose -f docker-compose.prod.yml pull
+            docker compose -f compose.yaml pull
 
             # Final cleanup before starting
             echo "🧹 Phase 8: Final cleanup before starting..."
-            docker compose -f docker-compose.prod.yml down --remove-orphans
+            docker compose -f compose.yaml down --remove-orphans
 
             echo "🚀 Phase 9: Starting updated services..."
-            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f compose.yaml up -d
 
             echo "⏳ Phase 10: Waiting for services to start..."
             sleep 30
 
             echo "🔍 Phase 11: Checking service status..."
-            docker compose -f docker-compose.prod.yml ps
+            docker compose -f compose.yaml ps
 
             echo "📋 Phase 12: Checking service logs for MongoDB connection..."
-            docker compose -f docker-compose.prod.yml logs --tail=5 api || echo "API logs not available"
-            docker compose -f docker-compose.prod.yml logs --tail=5 full-stack || echo "FullStack logs not available"
+            docker compose -f compose.yaml logs --tail=5 api || echo "API logs not available"
+            docker compose -f compose.yaml logs --tail=5 full-stack || echo "FullStack logs not available"
 
             echo "🎉 DEPLOYMENT PHASE COMPLETE!"
             echo "⏰ Deployment finished at: $(date)"

@@ -3,6 +3,8 @@
 .env.production
 .env.local
 .env.prod
+.dockerignore
+compose.dev.yaml
 
 # Dependencies
 node_modules/
