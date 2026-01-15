@@ -34,7 +34,7 @@ const getCorsOrigins = () => {
     // Production origins (will be ALB URLs)
     return [
       process.env.FRONTEND_URL || 'https://your-alb-url.com',
-      process.env.UI_URL || 'https://your-ui-alb-url.com'
+      process.env.UI_URL || 'https://www.deepakpun.com/ui/'
     ];
   } else {
     // Development origins
