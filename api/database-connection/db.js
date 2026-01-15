@@ -4,7 +4,7 @@ const connectDB = async () => {
   let conn
   try {
     if (process.env.NODE_ENV === 'production') {
-      conn = await mongoose.connect(process.env.MONGODB_URI)
+      conn = await mongoose.connect(process.env.MONGODB_URI_API)
     } else {
       // In dev 
       conn = await mongoose.connect(process.env.DB_URI)
