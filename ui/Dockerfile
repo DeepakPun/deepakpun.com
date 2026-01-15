@@ -1,37 +1,36 @@
-# Build stage - Build React app
-FROM node:24-alpine AS builder
+# ui/Dockerfile
+# Build stage
+FROM node:18-alpine as build
 
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm ci --only=production
 
-# Copy source code
 COPY . .
-
-# Build the React app
 RUN npm run build
 
-# Production stage - Serve with nginx
-FROM nginx:stable-alpine
+# Production stage
+FROM nginx:alpine
 
-# Update Alpine packages to pick up security fixes
-RUN apk update && apk upgrade --no-cache
+# Copy custom nginx configuration
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Remove default nginx config
-RUN rm -f /etc/nginx/conf.d/default.conf
+# Copy built React app
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy our custom nginx config
-COPY nginx/default.conf /etc/nginx/conf.d/
+# Create nginx.conf with proper MIME types
+RUN echo 'events { worker_connections 1024; } \
+http { \
+    include /etc/nginx/mime.types; \
+    default_type application/octet-stream; \
+    \
+    # Ensure JavaScript files are served with correct MIME type \
+    location ~* \.js$ { \
+        add_header Content-Type application/javascript; \
+    } \
+    \
+    include /etc/nginx/conf.d/*.conf; \
+}' > /etc/nginx/nginx.conf
 
-# Copy built React files from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx (nginx user already exists in nginx:alpine)
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
