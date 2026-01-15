@@ -3,22 +3,23 @@ services:
     build: ./landing-page
     image: pundeepak/portfolio-landing:latest
     ports:
-      - "80:80"
+      - '8080:80'
     restart: unless-stopped
 
   ui:
     build: ./ui
     image: pundeepak/portfolio-ui:latest
     ports:
-      - "3000:80"
+      - '3000:3000'
     restart: unless-stopped
 
   api:
     build: ./api
     image: pundeepak/portfolio-api:latest
     ports:
-      - "3001:3001"
+      - '3001:3001'
     environment:
+      - MONGODB_URI=${MONGODB_URI_API}
       - NODE_ENV=production
     restart: unless-stopped
 
@@ -26,7 +27,8 @@ services:
     build: ./full-stack
     image: pundeepak/portfolio-fullstack:latest
     ports:
-      - "3002:3002"
+      - '3002:3002'
     environment:
+      - MONGODB_URI=${MONGODB_URI_FULLSTACK}
       - NODE_ENV=production
     restart: unless-stopped
