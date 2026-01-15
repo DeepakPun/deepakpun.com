@@ -6,7 +6,31 @@ on:
     branches: [main]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push images
+        run: |
+          echo "🏗️ Building and pushing all services..."
+
+          # Build all services in parallel using docker-compose
+          docker compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml push
+
+          echo "✅ All images pushed to Docker Hub!"
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -23,75 +47,39 @@ jobs:
 
             echo "🚀 Starting deployment..."
 
-            # Navigate to your project directory
             cd /opt/deepakpun-portfolio
-
-            # Pull latest code
-            echo "📥 Pulling latest code..."
             git pull origin main
 
-            # Create .env.prod using environment variables (no shell interpretation)
-            echo "📝 Creating production environment file..."
+            # Create .env.prod
             cat > .env.prod << EOF
             MONGODB_URI_API=${MONGODB_URI_API}
             MONGODB_URI_FULLSTACK=${MONGODB_URI_FULLSTACK}
             NODE_ENV=production
             EOF
 
-            # Load environment variables
-            echo "📂 Loading environment variables..."
+            # Load environment
             set -a
             source .env.prod
             set +a
 
-            # Debug: Check if variables are loaded
-            echo "🔍 Checking environment variables:"
-            echo "MONGODB_URI_API length: ${#MONGODB_URI_API}"
-            echo "MONGODB_URI_FULLSTACK length: ${#MONGODB_URI_FULLSTACK}"
-            echo "NODE_ENV: $NODE_ENV"
-
-            # Verify variables are loaded
+            # Verify environment
             if [[ ${#MONGODB_URI_API} -lt 10 ]]; then
               echo "❌ MONGODB_URI_API too short or empty"
               exit 1
             fi
 
-            if [[ ${#MONGODB_URI_FULLSTACK} -lt 10 ]]; then
-              echo "❌ MONGODB_URI_FULLSTACK too short or empty"
-              exit 1
-            fi
+            echo "✅ Environment loaded successfully"
 
-            echo "✅ Environment variables loaded successfully"
-
-            # Docker operations
-            echo "🐳 Logging into Docker Hub..."
+            # Deploy
             echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-
-            echo "📥 Pulling latest images..."
             docker compose -f docker-compose.prod.yml pull
-
-            echo "🛑 Stopping existing services..."
             docker compose -f docker-compose.prod.yml down
-
-            echo "🚀 Starting updated services..."
             docker compose -f docker-compose.prod.yml up -d
 
-            echo "⏳ Waiting for services to start..."
             sleep 30
-
-            echo "🔍 Checking service status..."
             docker compose -f docker-compose.prod.yml ps
 
-            echo "📋 Checking service logs for MongoDB connection..."
-            docker compose -f docker-compose.prod.yml logs --tail=5 api || echo "API logs not available"
-            docker compose -f docker-compose.prod.yml logs --tail=5 full-stack || echo "FullStack logs not available"
-
             echo "🎉 Deployment complete!"
-            echo "🌐 Services should be available at:"
-            echo "   Landing: http://$(curl -s ifconfig.me):8080"
-            echo "   UI: http://$(curl -s ifconfig.me):3000"
-            echo "   API: http://$(curl -s ifconfig.me):3001"
-            echo "   FullStack: http://$(curl -s ifconfig.me):3002"
         env:
           MONGODB_URI_API: ${{ secrets.MONGODB_URI_API }}
           MONGODB_URI_FULLSTACK: ${{ secrets.MONGODB_URI_FULLSTACK }}
