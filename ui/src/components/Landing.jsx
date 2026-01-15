@@ -32,7 +32,7 @@ const Landing = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <a className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
-            href='http://localhost:3000/'
+            href='http://localhost:3001/'
             target='_blank'
           >
             Explore Documentation
