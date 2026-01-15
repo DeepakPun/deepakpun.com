@@ -11,6 +11,67 @@
     ></script>
     <!-- Primary Meta Tags -->
     <title>Deepak Pun | MERN Stack Developer</title>
+    <script>
+        // Smart URL detection
+        function getServiceUrls() {
+            const hostname = window.location.hostname;
+            const protocol = window.location.protocol;
+            
+            // Check if we're in production (your domain)
+            const isProduction = hostname === 'deepakpun.com' || 
+                                hostname === 'www.deepakpun.com' ||
+                                hostname !== 'localhost';
+            
+            if (isProduction) {
+                return {
+                    api: '/api/',
+                    ui: '/app/',
+                    fullstack: '/fullstack/',
+                    environment: 'production'
+                };
+            } else {
+                return {
+                    api: 'http://localhost:3001',
+                    ui: 'http://localhost:3000',
+                    fullstack: 'http://localhost:3002',
+                    environment: 'development'
+                };
+            }
+        }
+
+        // Update links when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const urls = getServiceUrls();
+            
+            // Update API link
+            const apiLink = document.getElementById('api-link');
+            if (apiLink) {
+                apiLink.href = urls.api;
+                apiLink.innerHTML = `${urls.environment === 'production' ? '🚀' : '🔧'} Explore API <i class="fa fa-arrow-right"></i>`;
+            }
+            
+            // Update UI link
+            const uiLink = document.getElementById('ui-link');
+            if (uiLink) {
+                uiLink.href = urls.ui;
+            }
+            
+            // Update FullStack link
+            const fullstackLink = document.getElementById('fullstack-link');
+            if (fullstackLink) {
+                fullstackLink.href = urls.fullstack;
+            }
+            
+            // Show environment indicator
+            console.log(`🌍 Environment: ${urls.environment}`);
+            
+            // Optional: Add environment badge
+            const envBadge = document.createElement('div');
+            envBadge.className = `env-badge ${urls.environment}`;
+            envBadge.textContent = urls.environment.toUpperCase();
+            document.body.appendChild(envBadge);
+        });
+    </script>
     <meta
       name="description"
       content="Full-Stack Developer specializing in MERN (MongoDB, Express, React, Node.js) and documented REST APIs. Explore my portfolio and Swagger documentation."
@@ -26,49 +87,67 @@
     <meta property="og:image" content="https://www.deepakpun.com" />
     <style>
       .alert-banner {
-    background-color: #fff3cd; /* Warning yellow */
-    color: #856404;
-    padding: 12px 20px;
-    border-bottom: 1px solid #ffeeba;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+        background-color: #fff3cd; /* Warning yellow */
+        color: #856404;
+        padding: 12px 20px;
+        border-bottom: 1px solid #ffeeba;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-.alert-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
+      .alert-content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          max-width: 1200px;
+          margin: 0 auto;
+          position: relative;
+      }
 
-.alert-content p {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-}
+      .alert-content p {
+          margin: 0;
+          font-size: 14px;
+          font-weight: 500;
+      }
 
-.alert-icon {
-    margin-right: 10px;
-}
+      .alert-icon {
+          margin-right: 10px;
+      }
 
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #856404;
-    position: absolute;
-    right: 0;
-    line-height: 1;
-}
-.close-btn:hover {
-    color: #533f03;
-}
+      .close-btn {
+          background: none;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          color: #856404;
+          position: absolute;
+          right: 0;
+          line-height: 1;
+      }
+      .close-btn:hover {
+          color: #533f03;
+      }
+       .env-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        .env-badge.development {
+            background: #ff6b6b;
+            color: white;
+        }
+        .env-badge.production {
+            background: #51cf66;
+            color: white;
+        }
     </style>
   </head>
   <body id="home">
@@ -104,25 +183,17 @@
             Focused on clean code, modern architecture, and user-centric design.
           </p>
           <div class="hero-buttons">
-            <!-- dev -->
-            <a href="http://localhost:3001" class="btn btn-primary" target="_blank">Explore API<i class="fa fa-arrow-right"></i></a>
-            <!-- prod -->
-            <!-- <a href="/api/" class="btn btn-primary" target="_blank">🚀 Explore API<i class="fa fa-arrow-right"></i></a> -->
-            <!-- dev -->
-            <a href="http://localhost:3002" class="btn btn-secondary" target="_blank">
-              Launch Fullstack App<i class="fa fa-arrow-right"></i>
-            <!-- </a> -->
-            <!-- prod -->
-            <!-- <a href="/fullstack/" class="btn btn-secondary" target="_blank">🚀 -->
-              <!-- Launch Fullstack App<i class="fa fa-arrow-right"></i> -->
-            <!-- </a> -->
-            <!-- dev -->
-            <a href="http://localhost:3000" class="btn btn-tertiary"
-            target="_blank"
-              >Frontend Specs<i class="fa fa-arrow-right"></i>
+            <!-- Dynamic links with IDs -->
+            <a id="api-link" href="#" class="btn btn-primary" target="_blank">
+                Explore API <i class="fa fa-arrow-right"></i>
             </a>
-            <!-- Prod -->
-          <!-- <a href="/ui/" class="btn btn-tertiary" target="_blank">🚀 Frontend Specs<i class="fa fa-arrow-right"></i> -->
+            
+            <a id="fullstack-link" href="#" class="btn btn-secondary" target="_blank">
+                View Full Stack <i class="fa fa-arrow-right"></i>
+            </a>
+            
+            <a id="ui-link" href="#" class="btn btn-tertiary" target="_blank">
+                Frontend Specs <i class="fa fa-arrow-right"></i>
             </a>
           </div>
         </div>
