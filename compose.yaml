@@ -12,7 +12,7 @@ services:
     build: ./ui
     image: pundeepak/portfolio-ui:latest
     ports:
-      - '3000:3000'
+      - '3000:80'
     restart: unless-stopped
     networks:
       - portfolio-network

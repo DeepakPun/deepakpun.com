@@ -66,10 +66,12 @@
             console.log(`🌍 Environment: ${urls.environment}`);
             
             // Optional: Add environment badge
-            const envBadge = document.createElement('div');
-            envBadge.className = `env-badge ${urls.environment}`;
-            envBadge.textContent = urls.environment.toUpperCase();
-            document.body.appendChild(envBadge);
+            if(urls.environment !== 'production'){
+            const envBadge = document.createElement('div')
+            envBadge.className = `env-badge ${urls.environment}`
+            envBadge.textContent = urls.environment.toUpperCase()
+            document.body.appendChild(envBadge)
+            }
         });
     </script>
     <meta
@@ -177,7 +179,7 @@
       <div class="hero-container">
         <div class="hero-content">
           <p class="hero-greeting">Hi, I'm Deepak Pun</p>
-          <p>Hey, What's up</p>
+          <!-- <p>Hey, What's up</p> -->
           <h1 class="hero-title">Building Sscalable Full-Stack Solutions.</h1>
           <p class="hero-subtitle">
             Focused on clean code, modern architecture, and user-centric design.
