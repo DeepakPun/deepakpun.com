@@ -29,7 +29,7 @@ services:
     networks:
       - portfolio-network
 
-  full-stack:
+  fullstack:
     build: ./full-stack
     image: pundeepak/portfolio-fullstack:latest
     ports:
