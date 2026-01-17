@@ -31,21 +31,28 @@ const getCorsOrigins = () => {
   const nodeEnv = process.env.NODE_ENV || 'development';
 
   if (nodeEnv === 'production') {
-    // Production origins (will be ALB URLs)
+    // Production origins
     return [
       process.env.FRONTEND_URL || 'https://your-alb-url.com',
-      process.env.UI_URL || 'https://www.deepakpun.com/ui/'
-    ];
+      process.env.UI_URL || 'https://www.deepakpun.com/ui/',
+      // Add Swagger UI origins for production
+      'http://deepakpun.com:3001',      // API docs (HTTP)
+      'https://deepakpun.com:3001',     // API docs (HTTPS if you add SSL)
+      'http://deepakpun.com',           // Main domain (HTTP)
+      'https://deepakpun.com'           // Main domain (HTTPS)
+    ]
   } else {
     // Development origins
     return [
-      // 'http://localhost:3002',  // Docker UI service
       'http://localhost:5173',  // Vite dev server
       'http://localhost:5174',  // Vite dev server (alternative)
-      'http://localhost:3000'   // React dev server
-    ];
+      'http://localhost:3000',  // React dev server
+      // Add local Swagger UI origins
+      'http://localhost:3001',  // Local API docs
+      'https://localhost:3001'  // Local API docs (HTTPS)
+    ]
   }
-};
+}
 
 const corsOptions = {
   origin: getCorsOrigins(),
