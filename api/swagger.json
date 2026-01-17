@@ -5,7 +5,7 @@
     "description": "Professional API documentation for my MERN projects.",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "https://www.deepakpun.com:3001",
   "basePath": "/",
   "schemes": [
     "http",

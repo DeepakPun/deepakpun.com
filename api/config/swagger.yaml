@@ -25,7 +25,12 @@ tags:
     description: Operations related to project management
 
 servers:
-  - url: http://localhost:3000/api/v1
+  # Production server
+  - url: http://deepakpun.com:3001/api/v1
+    description: Production Server
+
+  # Development server
+  - url: http://localhost:3001/api/v1
     description: Local Development Server
 
 # 1. Apply security globally to the entire API

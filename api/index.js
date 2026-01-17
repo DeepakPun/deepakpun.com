@@ -39,7 +39,7 @@ const getCorsOrigins = () => {
   } else {
     // Development origins
     return [
-      'http://localhost:3002',  // Docker UI service
+      // 'http://localhost:3002',  // Docker UI service
       'http://localhost:5173',  // Vite dev server
       'http://localhost:5174',  // Vite dev server (alternative)
       'http://localhost:3000'   // React dev server
@@ -112,8 +112,9 @@ app.use((err, req, res, next) => {
 
 const startServer = () => {
   const port = process.env.PORT || 3001
-  const server = app.listen(port, '0.0.0.0', () => {
-    console.log(`🚀 API RUNNING IN ${process.env.NODE_ENV} MODE ON PORT ${port}`)
+  const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'loccalhost'
+  const server = app.listen(port, host, () => {
+    console.log(`🚀 API RUNNING IN ${process.env.NODE_ENV} MODE ON PORT ${host}:${port}`)
   })
 
   const shutdown = (signal) => {
