@@ -33,8 +33,6 @@ const getCorsOrigins = () => {
   if (nodeEnv === 'production') {
     // Production origins
     return [
-      process.env.FRONTEND_URL || 'https://your-alb-url.com',
-      process.env.UI_URL || 'https://www.deepakpun.com/ui/',
       // Add Swagger UI origins for production
       'http://deepakpun.com:3001',      // API docs (HTTP)
       'https://deepakpun.com:3001',     // API docs (HTTPS if you add SSL)
@@ -119,9 +117,9 @@ app.use((err, req, res, next) => {
 
 const startServer = () => {
   const port = process.env.PORT || 3001
-  const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'loccalhost'
+  const host = '0.0.0.0'
   const server = app.listen(port, host, () => {
-    console.log(`🚀 API RUNNING IN ${process.env.NODE_ENV} MODE ON PORT ${host}:${port}`)
+    console.log(`🚀 API RUNNING IN ${process.env.NODE_ENV} MODE ON ${host}:${port}`)
   })
 
   const shutdown = (signal) => {
