@@ -3,34 +3,41 @@ import mongoose from 'mongoose'
 const connectDB = async () => {
   let conn
   try {
+    let mongoUri
+
     if (process.env.NODE_ENV === 'production') {
-      conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK)
+      mongoUri = process.env.MONGODB_URI_FULLSTACK
+      console.log('🚀 Connecting to production MongoDB (Atlas)...')
     } else {
-      // In dev 
-      // When running api standalone
-      // conn = await mongoose.connect(process.env.DB_URI)
-      // when using docker
-      conn = await mongoose.connect(process.env.DB_URI_DOCKER)
+      mongoUri = process.env.MONGODB_URI_FULLSTACK || process.env.DB_URI_DOCKER
+      console.log('🔧 Connecting to development MongoDB...')
     }
 
-    const dbName = conn.connection.db.databaseName
-    console.log('MongoDB connected')
-    console.log('📊 Database Name:', dbName)
-    console.log(`HOST: ${conn.connection.host}`)
-    console.log(`DATABASE: ${conn.connection.name}`)
+    if (!mongoUri) {
+      throw new Error(`MongoDB URI not found. NODE_ENV: ${process.env.NODE_ENV}`);
+    }
 
-    // Print all collections
-    const collections = await mongoose.connection.db.listCollections().toArray();
-    console.log('📋 Collections:');
-    collections.forEach(collection => {
-      console.log(`  - ${collection.name}`);
+    conn = await mongoose.connect(mongoUri, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     });
 
-    // Print collection count
-    console.log(`📈 Total Collections: ${collections.length}`)
+    const dbName = conn.connection.db.databaseName
+    console.log(`✅ MongoDB connected successfully to database: ${dbName}`)
+    console.log(`🌐 Environment: ${process.env.NODE_ENV}`)
+
   } catch (error) {
-    console.error(error)
-    process.exit(1)
+    console.error('❌ MongoDB connection failed:', error.message);
+    console.error('🔍 Available environment variables:')
+    console.error('  - NODE_ENV:', process.env.NODE_ENV)
+    console.error('  - MONGODB_URI_FULLSTACK:', process.env.MONGODB_URI_FULLSTACK ? 'SET' : 'NOT SET');
+    console.error('  - DB_URI_DOCKER:', process.env.DB_URI_DOCKER ? 'SET' : 'NOT SET')
+
+    if (process.env.NODE_ENV !== 'production') {
+      process.exit(1)
+    }
+    throw error
   }
 }
 
