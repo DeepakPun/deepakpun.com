@@ -80,7 +80,7 @@ app.get(`${BASE_PATH}/`, (req, res) => {
 // Mount Project Routes
 app.use(`${BASE_PATH}/projects`, projectRoutes)
 
-app.get('/health', (req, res) => {
+app.get('`${BASE_PATH}/`', (req, res) => {
   const uptime = process.uptime();
   const hours = Math.floor(uptime / 3600);
   const minutes = Math.floor((uptime % 3600) / 60);
