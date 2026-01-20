@@ -9,10 +9,11 @@ if (process.env.NODE_ENV !== 'production') {
 import express from 'express'
 import engine from 'ejs-mate'
 import path from 'path'
-import session from 'express-session'
 import flash from 'connect-flash'
 const __dirname = import.meta.dirname
 import methodOverride from 'method-override'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
 const app = express()
 
 app.use(express.json())
@@ -30,13 +31,21 @@ app.use(methodOverride('_method'))
 import projectRoutes from './routes/projectRoutes.js'
 
 app.use(session({
-  secret: process.env.SESSION_SECRET, 
+  name: 'sessionId',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI_FULLSTACK,
+    collectionName: 'user_sessions',
+    ttl: 24 * 60 * 60,
+    autoRemove: 'native'
+  }),
   cookie: {
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7
+    // expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24
   }
 }))
 
