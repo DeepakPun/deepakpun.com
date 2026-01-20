@@ -39,8 +39,9 @@
   </div>
     </div>
     <div class="col-md-4 text-md-end">
-      <a href="/projects/new" class="btn btn-success btn-lg shadow-sm">
-        <i class="fa-solid fa-plus me-1"></i> Create New Project
+      <a href="<%= basePath %>/projects/new" class="btn btn-success btn-lg shadow-sm">
+        <i class="fa-solid fa-plus"></i> 
+        <span class="d-none d-md-inline">Create New Project</span>
       </a>
     </div>
   </div>
@@ -55,7 +56,7 @@
               <%= project.description.substring(0, 100) %><%= project.description.length > 100 ? '...' : '' %>
             </p>
             <div class="mt-3">
-              <a href="/projects/<%= project._id %>" class="btn btn-outline-primary w-100">
+              <a href="<%= basePath %>/projects/<%= project.id %>" class="btn btn-outline-primary w-100">
                 View Details <i class="fa-solid fa-arrow-right ms-1"></i>
               </a>
             </div>
@@ -64,27 +65,29 @@
       </div>
     <% } %>
   </div>
-  <nav aria-label="Project pagination" class="mt-5">
-  <ul class="pagination justify-content-center">
-    
-    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-      <a class="page-link shadow-sm" href="/projects?page=<%= currentPage - 1 %>" tabindex="-1">
-        <i class="fa-solid fa-chevron-left"></i>
-      </a>
-    </li>
-
-    <% for(let i = 1; i <= totalPages; i++) { %>
-      <li class="page-item <%= currentPage === i ? 'active shadow-sm' : '' %>">
-        <a class="page-link" href="/projects?page=<%= i %>"><%= i %></a>
-      </li>
-    <% } %>
-
-    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-      <a class="page-link shadow-sm" href="/projects?page=<%= currentPage + 1 %>">
-        <i class="fa-solid fa-chevron-right"></i>
-      </a>
-    </li>
-
-  </ul>
-</nav>
+  <% if (totalProjects > 6) { %>
+    <nav aria-label="Project pagination" class="mt-5">
+      <ul class="pagination justify-content-center">
+        
+        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+          <a class="page-link shadow-sm" href="<%= basePath %>/projects?page=<%= currentPage - 1 %>" tabindex="-1">
+            <i class="fa-solid fa-chevron-left"></i>
+          </a>
+        </li>
+        
+        <% for(let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= currentPage === i ? 'active shadow-sm' : '' %>">
+            <a class="page-link" href="<%= basePath %>/projects?page=<%= i %>"><%= i %></a>
+          </li>
+          <% } %>
+          
+          <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="page-link shadow-sm" href="<%= basePath %>/projects?page=<%= currentPage + 1 %>">
+              <i class="fa-solid fa-chevron-right"></i>
+            </a>
+          </li>
+          
+        </ul>
+      </nav>
+      <% } %>
 </div>

@@ -8,7 +8,7 @@
           <h2 class="card-title text-center mb-4 fw-bold">Add New Project</h2>
 
           <form
-            action="/projects"
+            action="<%= basePath %>/projects"
             method="POST"
             novalidate
             class="needs-validation"
@@ -45,7 +45,7 @@
               <button type="submit" class="btn btn-primary btn-lg fw-bold">
                 <i class="fa-solid fa-rocket me-2"></i>Launch Project
               </button>
-              <a href="/projects" class="btn btn-link text-muted">Cancel</a>
+              <a href="<%= basePath %>/projects" class="btn btn-link text-muted">Cancel</a>
             </div>
           </form>
         </div>

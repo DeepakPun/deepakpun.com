@@ -9,7 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
 import express from 'express'
 import engine from 'ejs-mate'
 import path from 'path'
-import flash from 'connect-flash'
+// import flash from 'connect-flash'
+import flash from 'express-flash-plus'
 const __dirname = import.meta.dirname
 import methodOverride from 'method-override'
 import session from 'express-session'
@@ -23,10 +24,10 @@ app.use(express.urlencoded({ extended: true }))
 import connectDB from './dbconnection/db.js'
 connectDB()
 
+const BASE_PATH = process.env.NODE_ENV === 'production' ? '/fullstack' : ''
+
 app.engine('ejs', engine)
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
-app.use(express.static(path.join(__dirname, 'public')))
 app.use(methodOverride('_method'))
 import projectRoutes from './routes/projectRoutes.js'
 
@@ -52,17 +53,32 @@ app.use(session({
 app.use(flash())
 
 app.use((req, res, next) => {
+  res.locals.basePath = BASE_PATH
   res.locals.success = req.flash('success')
   res.locals.error = req.flash('error')
   next()
 })
 
-app.get('/', (req, res) => {
+// app.set('views', path.join(__dirname, 'views'))
+app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public')))
+// Static files with bae path
+// app.use(`${BASE_PATH}/public`, express.static('public'))
+
+// app.use(express.static(path.join(__dirname, 'public')))
+
+// app.use((req, res, next) => {
+//   res.locals.success = req.flash('success')
+//   res.locals.error = req.flash('error')
+//   next()
+// })
+
+
+app.get(`${BASE_PATH}/`, (req, res) => {
   res.render('landing')
 })
 
 // Mount Project Routes
-app.use('/projects', projectRoutes)
+app.use(`${BASE_PATH}/projects`, projectRoutes)
 
 app.get('/health', (req, res) => {
   const uptime = process.uptime();
@@ -186,4 +202,7 @@ app.get('/health', (req, res) => {
 })
 
 const port = 3002
-app.listen(port, '0.0.0.0', () => console.log(`✅ Full-Stack Server is running on port ${port}`))
+app.listen(port, '0.0.0.0', () => {
+  console.log(`✅ Full-Stack Server is running on port ${port}`)
+  console.log(`Base path: ${BASE_PATH || '/'}`)
+})

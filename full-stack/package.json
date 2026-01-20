@@ -16,17 +16,17 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "dev": "nodemon index",
+    "dev": "nodemon --exec \"node --trace-deprecation\" index",
     "start": "node index"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.51.4",
-    "connect-flash": "^0.1.1",
     "connect-mongo": "^6.0.0",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^5.2.1",
     "express-async-handler": "^1.2.0",
+    "express-flash-plus": "^0.0.7",
     "express-session": "^1.18.2",
     "joi": "^18.0.2",
     "leo-profanity": "^1.9.0",

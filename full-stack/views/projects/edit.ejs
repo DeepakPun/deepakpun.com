@@ -10,7 +10,7 @@
           </h2>
 
           <form
-            action="/projects/<%= project._id %>?_method=PUT"
+            action="<%= basePath %>/projects/<%= project._id %>?_method=PUT"
             method="POST"
             novalidate
             class="needs-validation"
@@ -51,7 +51,7 @@
                 Update Project
               </button>
               <a
-                href="/projects/<%= project._id %>"
+                href="<%= basePath %>/projects/<%= project._id %>"
                 class="btn btn-outline-secondary"
               >
                 Cancel
