@@ -1,0 +1,55 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 col-lg-6 mx-auto">
+      <div class="card shadow border-0">
+        <div class="card-body p-4 p-md-5">
+          <h2 class="card-title text-center mb-4 fw-bold">Add New Project</h2>
+
+          <form
+            action="/projects"
+            method="POST"
+            novalidate
+            class="needs-validation"
+          >
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                placeholder="Project Title"
+                required
+              />
+              <label for="title">Project Title</label>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please add project title</div>
+            </div>
+
+            <div class="form-floating mb-4">
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                placeholder="Description"
+                style="height: 120px"
+                required
+              ></textarea>
+              <label for="description">Project Description</label>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please add project description</div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                <i class="fa-solid fa-rocket me-2"></i>Launch Project
+              </button>
+              <a href="/projects" class="btn btn-link text-muted">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

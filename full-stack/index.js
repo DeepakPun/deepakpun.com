@@ -1,43 +1,59 @@
+import dotenvx from '@dotenvx/dotenvx'
+if (process.env.NODE_ENV !== 'production') {
+  // Load .env.local only in development
+  dotenvx.config({ path: '.env.local' });
+} else {
+  // In production, use environment variables directly
+  console.log('Production mode: Using environment variables');
+}
 import express from 'express'
 import engine from 'ejs-mate'
 import path from 'path'
+import session from 'express-session'
+import flash from 'connect-flash'
 const __dirname = import.meta.dirname
+import methodOverride from 'method-override'
 const app = express()
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// Connect to database
+import connectDB from './dbconnection/db.js'
+connectDB()
 
 app.engine('ejs', engine)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(methodOverride('_method'))
+import projectRoutes from './routes/projectRoutes.js'
 
-// const cors = require('cors')
+app.use(session({
+  secret: process.env.SESSION_SECRET, 
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7
+  }
+}))
 
-// const getCorsOrigins = () => {
-//   const nodeEnv = process.env.NODE_ENV || 'development'
+app.use(flash())
 
-//   if (nodeEnv === 'production') {
-//     return [
-//       process.env.FRONTEND_URL || 'https://your-alb-url.com',
-//       process.env.UI_URL || 'https://your-ui-alb-url.com'
-//     ]
-//   } else {
-//     return [
-//       'http://localhost:3002',
-//       'http://localhost:5173',
-//       'http://localhost:5174',
-//       'http://localhost:3000',
-//       'http://localhost:8080'  // Landing page
-//     ]
-//   }
-// }
-
-// app.use(cors({
-//   origin: getCorsOrigins(),
-//   credentials: true
-// }))
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success')
+  res.locals.error = req.flash('error')
+  next()
+})
 
 app.get('/', (req, res) => {
   res.render('landing')
 })
+
+// Mount Project Routes
+app.use('/projects', projectRoutes)
 
 app.get('/health', (req, res) => {
   const uptime = process.uptime();

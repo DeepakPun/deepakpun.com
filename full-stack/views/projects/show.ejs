@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row mt-5">
+  <div class="col-md-6 offset-md-3">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3 class="card-title mb-3 text-primary"><%= project.title %></h3>
+        <p class="card-text text-muted"><%= project.description %></p>
+        <hr />
+        <div class="d-flex justify-content-between align-items-center">
+          <a
+            href="/projects/<%= project._id %>/edit"
+            class="btn btn-info text-white"
+            >Edit Project</a
+          >
+          <form
+            action="/projects/<%= project._id %>?_method=DELETE"
+            method="POST"
+          >
+            <button
+              class="btn btn-outline-danger"
+              onclick="
+                return confirm(
+                  'Are you sure you want to permanently delete this project?',
+                )
+              "
+            >
+              <i class="fa-solid fa-trash-can me-1"></i>Delete
+            </button>
+          </form>
+          <a href="/projects" class="btn btn-outline-primary btn-sm"
+            >Back to All Projects</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
