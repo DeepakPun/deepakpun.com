@@ -4,10 +4,10 @@ const connectDB = async () => {
   let conn
   try {
     if (process.env.NODE_ENV === 'production') {
-      conn = await mongoose.Connection(process.env.MONGODB_URI_FULLSTACK)
+      conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK)
       console.log('🚀 Connecting to production MongoDB (Atlas)...')
     } else {
-      conn = await mongoose.Connection(process.env.DB_URI_DOCKER)
+      conn = await mongoose.connect(process.env.DB_URI_DOCKER)
       console.log('🔧 Connecting to development MongoDB...')
     }
 
