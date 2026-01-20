@@ -72,7 +72,7 @@ app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public')))
 //   next()
 // })
 
-
+console.log(`Base path: ${BASE_PATH}`)
 app.get(`${BASE_PATH}/`, (req, res) => {
   res.render('landing')
 })

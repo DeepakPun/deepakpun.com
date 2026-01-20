@@ -13,4 +13,4 @@ RUN chown -R nodejs:nodejs /app
 USER nodejs
 
 EXPOSE 3002
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
