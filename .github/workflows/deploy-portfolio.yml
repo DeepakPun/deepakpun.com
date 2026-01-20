@@ -192,7 +192,7 @@ jobs:
             docker compose -f compose.yaml down --remove-orphans
 
             echo "🚀 Phase 9: Starting updated services..."
-            docker-compose --env-file .env.prod up -d
+            docker-compose up -d
             # docker compose -f compose.yaml up -d
 
             echo "⏳ Phase 10: Waiting for services to start..."
