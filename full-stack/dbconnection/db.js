@@ -1,34 +1,33 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const connectDB = async () => {
-  let conn
+  let conn;
   try {
     if (process.env.NODE_ENV === 'production') {
-      conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK)
-      console.log('🚀 Connecting to production MongoDB (Atlas)...')
+      console.log('🚀 Connecting to production MongoDB (Atlas)...');
+      conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK);
     } else {
-      conn = await mongoose.connect(process.env.DB_URI_DOCKER)
-      console.log('🔧 Connecting to development MongoDB...')
+      console.log('🔧 Connecting to development MongoDB...');
+      conn = await mongoose.connect(process.env.DB_URI_DOCKER);
     }
 
-    const dbName = conn.connection.db.databaseName
-    console.log('MongoDB connected')
-    console.log('📊 Database Name:', dbName)
-    console.log(`HOST: ${conn.connection.host}`)
-    console.log(`DATABASE: ${conn.connection.name}`)
+    const dbName = conn.connection.db.databaseName;
+    console.log('✅ MongoDB connected successfully');
+    console.log(`✅ Database Name: ${dbName}`);
+    console.log(`✅ Host: ${conn.connection.host}`);
 
     const collections = await mongoose.connection.db.listCollections().toArray();
     console.log('📋 Collections:');
     collections.forEach(collection => {
       console.log(`  - ${collection.name}`);
     });
+    console.log(`📈 Total Collections: ${collections.length}`);
 
-    // Print collection count
-    console.log(`📈 Total Collections: ${collections.length}`)
+    return conn;
   } catch (error) {
-    console.error(error)
-    process.exit(1)
+    console.error('❌ MongoDB connection error:', error.message)
+    throw error
   }
-}
+};
 
-export default connectDB
+export default connectDB;
