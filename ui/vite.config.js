@@ -4,11 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
   plugins: [
     react(),
     tailwindcss()
   ],
+  base: '/ui/',
+  // base: import.meta.env.NODE_ENV === 'production' ? '/ui/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

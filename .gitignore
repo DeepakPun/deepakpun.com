@@ -1,5 +1,4 @@
 # Environment files
-.env
 .env.production
 .env.local
 .env.prod
