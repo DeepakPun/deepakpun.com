@@ -25,6 +25,7 @@ const connectDB = async () => {
 
     const dbName = conn.connection.db.databaseName
     console.log(`✅ MongoDB connected successfully to database: ${dbName}`)
+    console.log(`✅ Host: ${conn.connection.host}`)
     console.log(`🌐 Environment: ${process.env.NODE_ENV}`)
 
   } catch (error) {
