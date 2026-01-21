@@ -24,9 +24,9 @@ services:
       - '3001:3001'
     env_file:
       - .env.prod
-    environment:
-      - MONGODB_URI_API=${MONGODB_URI_API}
-      - NODE_ENV=production
+    # environment:
+    #   - MONGODB_URI_API=${MONGODB_URI_API}
+    #   - NODE_ENV=production
     restart: unless-stopped
     networks:
       - portfolio-network
@@ -38,10 +38,10 @@ services:
       - '3002:3002'
     env_file:
       - .env.prod
-    environment:
-      - MONGODB_URI_FULLSTACK=${MONGODB_URI_FULLSTACK}
-      - NODE_ENV=production
-      - SESSION_SECRET=${SESSION_SECRET}
+    # environment:
+    #   - MONGODB_URI_FULLSTACK=${MONGODB_URI_FULLSTACK}
+    #   - NODE_ENV=production
+    #   - SESSION_SECRET=${SESSION_SECRET}
     restart: unless-stopped
     networks:
       - portfolio-network

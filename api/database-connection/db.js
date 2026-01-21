@@ -4,6 +4,7 @@ const connectDB = async () => {
   let conn
   try {
     if (process.env.NODE_ENV === 'production') {
+      console.log('🚀 Connecting to production MongoDB (Atlas)...');
       conn = await mongoose.connect(process.env.MONGODB_URI_API)
     } else {
       // In dev 
