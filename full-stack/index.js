@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
   dotenvx.config({ path: '.env.local' });
 } else {
   // In production, use environment variables directly
+  console.log(`DB_URL: ${process.env.MONGODB_URI_FULLSTACK}`)
   console.log('Production mode: Using environment variables');
 }
 import express from 'express'
