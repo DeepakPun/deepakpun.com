@@ -89,7 +89,7 @@ jobs:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
           key: ${{ secrets.DO_SSH_KEY }}
-          envs: MONGODB_URI_API,MONGODB_URI_FULLSTACK,DOCKER_HUB_TOKEN,DOCKER_HUB_USERNAME
+          envs: MONGODB_URI_API,MONGODB_URI_FULLSTACK,DOCKER_HUB_TOKEN,DOCKER_HUB_USERNAME,SESSION_SECRET
           script: |
             set -e
 
