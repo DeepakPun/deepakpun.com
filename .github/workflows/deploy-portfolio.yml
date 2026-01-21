@@ -147,6 +147,7 @@ jobs:
             MONGODB_URI_FULLSTACK=${MONGODB_URI_FULLSTACK}
             NODE_ENV=production
             DOCKER_USERNAME=${DOCKER_HUB_USERNAME}
+            SESSION_SECRET=${SESSION_SECRET}
             EOF
 
             # Load environment variables
