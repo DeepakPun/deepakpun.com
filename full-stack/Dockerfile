@@ -16,4 +16,4 @@ USER nodejs
 ENV NODE_ENV=production
 
 EXPOSE 3002
-CMD ["node", "index.js"]
+CMD ["npm", "start"]
