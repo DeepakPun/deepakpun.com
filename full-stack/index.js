@@ -33,14 +33,15 @@ app.set('view engine', 'ejs')
 app.use(methodOverride('_method'))
 import projectRoutes from './routes/projectRoutes.js'
 app.set('views', path.join(__dirname, 'views'))
-
+import mongoose from 'mongoose'
 app.use(session({
   name: 'sessionId',
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI_FULLSTACK,
+    // mongoUrl: process.env.MONGODB_URI_FULLSTACK,
+    client: mongoose.connection.getClient(),
     collectionName: 'user_sessions',
     ttl: 24 * 60 * 60,
     autoRemove: 'native'
