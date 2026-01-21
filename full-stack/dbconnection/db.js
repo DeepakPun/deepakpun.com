@@ -8,7 +8,7 @@ const connectDB = async () => {
       conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK);
     } else {
       console.log('🔧 Connecting to development MongoDB...');
-      conn = await mongoose.connect(process.env.DB_URI_DOCKER);
+      conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK_LOCAL);
     }
 
     const dbName = conn.connection.db.databaseName;

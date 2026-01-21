@@ -3,7 +3,7 @@ import Joi from 'joi'
 import filter from 'leo-profanity'
 import mongoose from 'mongoose'
 
-const renderProjectIndex = async (req, res) => {
+const renderProjectIndex = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 6
@@ -12,7 +12,7 @@ const renderProjectIndex = async (req, res) => {
 
     const [projects, totalProjects] = await Promise.all([
       Project.find({})
-        .sort({ createdAt: -1 }) 
+        .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
       Project.countDocuments({})
@@ -92,7 +92,7 @@ const viewProjectDetails = async (req, res, next) => {
   }
 }
 
-const renderUpdateForm = async (req, res) => {
+const renderUpdateForm = async (req, res, next) => {
 
   try {
     const { projectId } = req.params;
