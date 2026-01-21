@@ -25,6 +25,8 @@ import connectDB from './dbconnection/db.js'
 connectDB()
 
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '/fullstack' : ''
+app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public')))
+app.set('views', path.join(__dirname, 'views'))
 
 app.engine('ejs', engine)
 app.set('view engine', 'ejs')
@@ -59,8 +61,6 @@ app.use((req, res, next) => {
   next()
 })
 
-// app.set('views', path.join(__dirname, 'views'))
-app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public')))
 // Static files with bae path
 // app.use(`${BASE_PATH}/public`, express.static('public'))
 
