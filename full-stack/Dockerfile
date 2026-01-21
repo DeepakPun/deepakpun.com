@@ -5,6 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci && npm cache clean --force
 # RUN npm ci --only=production && npm cache clean --force
+RUN npm install @dotenvx/dotenvx
 
 COPY . .
 
