@@ -26,12 +26,12 @@ connectDB()
 
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '/fullstack' : ''
 app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public')))
-app.set('views', path.join(__dirname, 'views'))
 
 app.engine('ejs', engine)
 app.set('view engine', 'ejs')
 app.use(methodOverride('_method'))
 import projectRoutes from './routes/projectRoutes.js'
+app.set('views', path.join(__dirname, 'views'))
 
 app.use(session({
   name: 'sessionId',
