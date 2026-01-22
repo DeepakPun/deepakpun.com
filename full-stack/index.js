@@ -221,7 +221,7 @@ app.get(`${BASE_PATH}/health`, (req, res) => {
 
 // Mount project routes
 // app.use(`${BASE_PATH}/projects`, projectRoutes);
-app.use(`/projects`, (req, res, next) => {
+app.use(`${BASE_PATH}/projects`, (req, res, next) => {
   req.basePath = BASE_PATH
   res.locals.basePath = BASE_PATH 
   next()
