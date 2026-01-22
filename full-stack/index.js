@@ -166,6 +166,26 @@ async function initializeApp() {
     // Routes
     console.log('🛣️  Setting up routes...');
 
+    // Landing page route
+    // app.get(`${BASE_PATH}/`, (req, res) => {
+      // try {
+        // console.log('📄 Rendering landing page');
+        // res.render('landing')
+        // res.render('landing', {
+        //   title: 'Deepak Pun Portfolio - Fullstack',
+        //   basePath: BASE_PATH,
+        //   environment: process.env.NODE_ENV,
+        //   timestamp: new Date().toISOString()
+        // });
+    //   } catch (error) {
+    //     console.error('❌ Error rendering landing page:', error);
+    //     res.status(500).json({
+    //       error: 'Internal server error',
+    //       message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message
+    //     });
+    //   }
+    // });
+
     // Root route - redirect to base path
     app.get('/', (req, res) => {
       console.log('📄 Root route accessed, redirecting to base path')
@@ -192,26 +212,6 @@ async function initializeApp() {
         })
       }
     })
-
-    // Landing page route
-    // app.get(`${BASE_PATH}/`, (req, res) => {
-      // try {
-        // console.log('📄 Rendering landing page');
-        // res.render('landing')
-        // res.render('landing', {
-        //   title: 'Deepak Pun Portfolio - Fullstack',
-        //   basePath: BASE_PATH,
-        //   environment: process.env.NODE_ENV,
-        //   timestamp: new Date().toISOString()
-        // });
-    //   } catch (error) {
-    //     console.error('❌ Error rendering landing page:', error);
-    //     res.status(500).json({
-    //       error: 'Internal server error',
-    //       message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message
-    //     });
-    //   }
-    // });
 
     // Health check endpoint
     app.get(`${BASE_PATH}/health`, (req, res) => {
