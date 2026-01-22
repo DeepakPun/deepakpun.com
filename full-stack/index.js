@@ -10,6 +10,7 @@ import helmet from 'helmet'
 import compression from 'compression'
 // import rateLimit from 'express-rate-limit'
 import flash from 'connect-flash'
+import methodOverride from 'method-override';
 
 // Import database connection
 import database from './config/database.js'
@@ -147,6 +148,7 @@ app.use(compression());
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(methodOverride('_method'));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
