@@ -202,10 +202,7 @@ app.use((req, res, next) => {
 // Routes
 console.log('🛣️  Setting up routes...');
 
-const PROJECTS_ROUTER_PATH = process.env.NODE_ENV === 'production'
-  ? '/fullstack/projects'
-  : '/projects'
-
+const PROJECTS_ROUTER_PATH = '/projects'
 
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
