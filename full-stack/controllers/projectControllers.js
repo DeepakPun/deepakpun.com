@@ -24,7 +24,8 @@ const renderProjectIndex = async (req, res, next) => {
       projects,
       currentPage: page,
       totalPages,
-      totalProjects
+      totalProjects,
+      basePath: req.basePath,
     });
 
   } catch (err) {
@@ -33,7 +34,7 @@ const renderProjectIndex = async (req, res, next) => {
 }
 
 const renderNewProjectForm = async (req, res) => {
-  res.render('projects/new')
+  res.render(`/projects/new`, { basePath: req.basePath })
 }
 
 const createNewProject = async (req, res) => {
@@ -86,7 +87,7 @@ const viewProjectDetails = async (req, res, next) => {
       return res.redirect(`${req.basePath}/projects`)
     }
 
-    res.render('projects/show', { project: foundProject })
+    res.render('projects/show', { project: foundProject, basePath: req.basePath })
 
   } catch (err) {
     next(err)
@@ -110,7 +111,7 @@ const renderUpdateForm = async (req, res, next) => {
       return res.redirect(`${req.basePath}/projects`);
     }
 
-    res.render('projects/edit', { project: project });
+    res.render('projects/edit', { project: project, basePath: req.basePath });
 
   } catch (err) {
     next(err)
