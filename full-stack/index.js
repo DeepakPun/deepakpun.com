@@ -7,9 +7,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import engine from 'ejs-mate';
 // import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import rateLimit from 'express-rate-limit';
+// import helmet from 'helmet';
+// import compression from 'compression';
+// import rateLimit from 'express-rate-limit';
 
 // Import database connection
 import database from './config/database.js';
@@ -72,19 +72,19 @@ console.log(`Base path: ${BASE_PATH}`);
 const app = express();
 
 // Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  },
-  crossOriginEmbedderPolicy: false
-}));
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       styleSrc: ["'self'", "'unsafe-inline'"],
+//       scriptSrc: ["'self'"],
+//       imgSrc: ["'self'", "data:", "https:"],
+//     },
+//   },
+//   crossOriginEmbedderPolicy: false
+// }));
 
-app.use(compression());
+// app.use(compression());
 
 // CORS configuration
 const corsOptions = {
