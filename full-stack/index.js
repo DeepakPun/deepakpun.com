@@ -9,6 +9,7 @@ import engine from 'ejs-mate'
 import helmet from 'helmet'
 import compression from 'compression'
 // import rateLimit from 'express-rate-limit'
+import flash from 'connect-flash'
 
 // Import database connection
 import database from './config/database.js'
@@ -140,6 +141,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  res.locals.messages = req.flash();
+  next();
+});
+
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
   const healthStatus = {
@@ -155,19 +161,6 @@ app.get(`${BASE_PATH}/health`, (req, res) => {
 
   console.log('🏥 Health check requested');
   res.json(healthStatus);
-});
-
-// API info endpoint
-app.get(`${BASE_PATH}/api`, (req, res) => {
-  res.json({
-    message: 'Fullstack API is running',
-    basePath: BASE_PATH,
-    endpoints: [
-      `${BASE_PATH}/`,
-      `${BASE_PATH}/health`,
-    ],
-    timestamp: new Date().toISOString()
-  });
 });
 
 app.get('/', (req, res) => {
@@ -221,6 +214,13 @@ async function initializeApp() {
       }
     }));
     console.log('✅ Session store configured');
+    app.use(flash())
+
+    app.use((req, res, next) => {
+      res.locals.success = req.flash('success')
+      res.locals.error = req.flash('error')
+      next()
+    })
 
     // Routes
     console.log('🛣️  Setting up routes...');
