@@ -19,8 +19,8 @@ class DatabaseConnection {
 
       // MongoDB connection options
       const options = {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
         maxPoolSize: 10,
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
@@ -29,7 +29,7 @@ class DatabaseConnection {
         w: 'majority',
         // Additional options for better reliability
         maxIdleTimeMS: 30000,
-        bufferMaxEntries: 0,
+        // bufferMaxEntries: 0,
         connectTimeoutMS: 10000,
       };
 
