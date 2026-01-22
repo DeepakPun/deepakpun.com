@@ -130,6 +130,33 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root route - redirect to base path
+app.get('/', (req, res) => {
+  console.log('📄 Root route accessed, redirecting to base path')
+  res.redirect(`${BASE_PATH}/`)
+})
+
+app.get(`${BASE_PATH}/`, (req, res) => {
+  console.log('📄 Rendering landing page')
+  console.log('BASE_PATH:', BASE_PATH)
+
+  try {
+    res.render('landing', {
+      basePath: BASE_PATH,
+      // title: 'Deepak Pun - Fullstack Service',
+      // environment: process.env.NODE_ENV || 'development',
+      // timestamp: new Date().toISOString()
+    })
+  } catch (error) {
+    console.error('❌ Error rendering landing page:', error)
+    res.status(500).json({
+      error: 'Template rendering failed',
+      message: error.message,
+      basePath: BASE_PATH
+    })
+  }
+})
+
 // Database connection and session setup
 async function initializeApp() {
   try {
@@ -185,33 +212,6 @@ async function initializeApp() {
     //     });
     //   }
     // });
-
-    // Root route - redirect to base path
-    app.get('/', (req, res) => {
-      console.log('📄 Root route accessed, redirecting to base path')
-      res.redirect(`${BASE_PATH}/`)
-    })
-
-    app.get(`${BASE_PATH}/`, (req, res) => {
-      console.log('📄 Rendering landing page')
-      console.log('BASE_PATH:', BASE_PATH)
-
-      try {
-        res.render('landing', {
-          basePath: BASE_PATH,
-          // title: 'Deepak Pun - Fullstack Service',
-          // environment: process.env.NODE_ENV || 'development',
-          // timestamp: new Date().toISOString()
-        })
-      } catch (error) {
-        console.error('❌ Error rendering landing page:', error)
-        res.status(500).json({
-          error: 'Template rendering failed',
-          message: error.message,
-          basePath: BASE_PATH
-        })
-      }
-    })
 
     // Health check endpoint
     app.get(`${BASE_PATH}/health`, (req, res) => {
