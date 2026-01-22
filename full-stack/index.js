@@ -166,25 +166,30 @@ async function initializeApp() {
     // Routes
     console.log('🛣️  Setting up routes...');
 
-    // Landing page route
     app.get(`${BASE_PATH}/`, (req, res) => {
-      try {
-        console.log('📄 Rendering landing page');
-        res.render('landing')
+      console.log('📄 Rendering landing page')
+      res.render('landing', { basePath: BASE_PATH })
+    })
+
+    // Landing page route
+    // app.get(`${BASE_PATH}/`, (req, res) => {
+      // try {
+        // console.log('📄 Rendering landing page');
+        // res.render('landing')
         // res.render('landing', {
         //   title: 'Deepak Pun Portfolio - Fullstack',
         //   basePath: BASE_PATH,
         //   environment: process.env.NODE_ENV,
         //   timestamp: new Date().toISOString()
         // });
-      } catch (error) {
-        console.error('❌ Error rendering landing page:', error);
-        res.status(500).json({
-          error: 'Internal server error',
-          message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message
-        });
-      }
-    });
+    //   } catch (error) {
+    //     console.error('❌ Error rendering landing page:', error);
+    //     res.status(500).json({
+    //       error: 'Internal server error',
+    //       message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message
+    //     });
+    //   }
+    // });
 
     // Health check endpoint
     app.get(`${BASE_PATH}/health`, (req, res) => {

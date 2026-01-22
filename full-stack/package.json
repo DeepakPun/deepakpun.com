@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "dev": "NODE_ENVdevelopment nodemon --exec \"node --trace-deprecation\" index",
+    "dev": "NODE_ENV=development nodemon --exec \"node --trace-deprecation\" index",
     "start": "NODE_ENV=production node index"
   },
   "dependencies": {
