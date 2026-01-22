@@ -141,10 +141,44 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   res.locals.messages = req.flash();
-//   next();
-// });
+// Connect to database first
+console.log('📊 Connecting to database...');
+await database.connect();
+console.log('✅ Database connection established');
+
+// Session configuration (after database connection)
+console.log('🔐 Setting up session store...');
+app.use(session({
+  name: 'sessionId',
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI_FULLSTACK,
+    collectionName: 'user_sessions',
+    ttl: 24 * 60 * 60, // 1 day
+    autoRemove: 'native',
+    touchAfter: 24 * 3600 // lazy session update
+  }),
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
+  }
+}));
+console.log('✅ Session store configured');
+app.use(flash())
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success')
+  res.locals.error = req.flash('error')
+  next()
+})
+
+// Routes
+console.log('🛣️  Setting up routes...');
+
 
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
@@ -186,44 +220,6 @@ app.get(`${BASE_PATH}/`, (req, res) => {
 async function initializeApp() {
   try {
     console.log('🚀 Initializing application...');
-
-    // Connect to database first
-    console.log('📊 Connecting to database...');
-    await database.connect();
-    console.log('✅ Database connection established');
-
-    // Session configuration (after database connection)
-    console.log('🔐 Setting up session store...');
-    app.use(session({
-      name: 'sessionId',
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI_FULLSTACK,
-        collectionName: 'user_sessions',
-        ttl: 24 * 60 * 60, // 1 day
-        autoRemove: 'native',
-        touchAfter: 24 * 3600 // lazy session update
-      }),
-      cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24, // 24 hours
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
-      }
-    }));
-    console.log('✅ Session store configured');
-    app.use(flash())
-
-    app.use((req, res, next) => {
-      res.locals.success = req.flash('success')
-      res.locals.error = req.flash('error')
-      next()
-    })
-
-    // Routes
-    console.log('🛣️  Setting up routes...');
 
     // Mount project routes
     app.use(`${BASE_PATH}/projects`, projectRoutes);
