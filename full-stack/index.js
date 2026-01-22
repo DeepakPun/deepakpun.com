@@ -168,7 +168,23 @@ async function initializeApp() {
 
     app.get(`${BASE_PATH}/`, (req, res) => {
       console.log('📄 Rendering landing page')
-      res.render('landing', { basePath: BASE_PATH })
+      console.log('BASE_PATH:', BASE_PATH)
+
+      try {
+        res.render('landing', {
+          basePath: BASE_PATH,
+          // title: 'Deepak Pun - Fullstack Service',
+          // environment: process.env.NODE_ENV || 'development',
+          // timestamp: new Date().toISOString()
+        })
+      } catch (error) {
+        console.error('❌ Error rendering landing page:', error)
+        res.status(500).json({
+          error: 'Template rendering failed',
+          message: error.message,
+          basePath: BASE_PATH
+        })
+      }
     })
 
     // Landing page route
@@ -221,8 +237,8 @@ async function initializeApp() {
         availableRoutes: [
           `${BASE_PATH}/`,
           `${BASE_PATH}/health`,
-          `${BASE_PATH}/api`,
-          `${BASE_PATH}/projects`
+          // `${BASE_PATH}/api`,
+          // `${BASE_PATH}/projects`
         ],
         timestamp: new Date().toISOString()
       });
