@@ -166,6 +166,12 @@ async function initializeApp() {
     // Routes
     console.log('🛣️  Setting up routes...');
 
+    // Root route - redirect to base path
+    app.get('/', (req, res) => {
+      console.log('📄 Root route accessed, redirecting to base path')
+      res.redirect(`${BASE_PATH}/`)
+    })
+
     app.get(`${BASE_PATH}/`, (req, res) => {
       console.log('📄 Rendering landing page')
       console.log('BASE_PATH:', BASE_PATH)
