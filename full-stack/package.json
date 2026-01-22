@@ -16,22 +16,21 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "dev": "nodemon --exec \"node --trace-deprecation\" index",
-    "start": "node index"
+    "dev": "NODE_ENVdevelopment nodemon --exec \"node --trace-deprecation\" index",
+    "start": "NODE_ENV=production node index"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.51.4",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
     "connect-mongo": "^6.0.0",
+    "mongoose": "^9.1.1",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
-    "express": "^5.2.1",
-    "express-async-handler": "^1.2.0",
     "express-flash-plus": "^0.0.7",
-    "express-session": "^1.18.2",
     "joi": "^18.0.2",
     "leo-profanity": "^1.9.0",
-    "method-override": "^3.0.0",
-    "mongoose": "^9.1.1"
+    "method-override": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
