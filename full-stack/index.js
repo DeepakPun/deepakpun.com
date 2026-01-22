@@ -170,12 +170,13 @@ async function initializeApp() {
     app.get(`${BASE_PATH}/`, (req, res) => {
       try {
         console.log('📄 Rendering landing page');
-        res.render('landing', {
-          title: 'Deepak Pun Portfolio - Fullstack',
-          basePath: BASE_PATH,
-          environment: process.env.NODE_ENV,
-          timestamp: new Date().toISOString()
-        });
+        res.render('landing')
+        // res.render('landing', {
+        //   title: 'Deepak Pun Portfolio - Fullstack',
+        //   basePath: BASE_PATH,
+        //   environment: process.env.NODE_ENV,
+        //   timestamp: new Date().toISOString()
+        // });
       } catch (error) {
         console.error('❌ Error rendering landing page:', error);
         res.status(500).json({
