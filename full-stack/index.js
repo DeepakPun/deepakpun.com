@@ -5,10 +5,10 @@ import MongoStore from 'connect-mongo'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import engine from 'ejs-mate'
-import cors from 'cors'
+// import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
-import rateLimit from 'express-rate-limit'
+// import rateLimit from 'express-rate-limit'
 
 // Import database connection
 import database from './config/database.js'
@@ -86,38 +86,38 @@ app.use(helmet({
 app.use(compression());
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === 'production' ? 100 : 1000, // More lenient in development
-  message: {
-    error: 'Too many requests',
-    message: 'Please try again later'
-  }
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: process.env.NODE_ENV === 'production' ? 100 : 1000, // More lenient in development
+//   message: {
+//     error: 'Too many requests',
+//     message: 'Please try again later'
+//   }
+// });
+// app.use(limiter);
 
 // CORS configuration
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://www.deepakpun.com',
-      'https://deepakpun.com'
-    ];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [
+//       'http://localhost:3000',
+//       'http://localhost:3001',
+//       'https://www.deepakpun.com',
+//       'https://deepakpun.com'
+//     ];
 
-    // Allow requests with no origin (mobile apps, etc.)
-    if (!origin) return callback(null, true);
+//     // Allow requests with no origin (mobile apps, etc.)
+//     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  optionsSuccessStatus: 200
-};
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+//   optionsSuccessStatus: 200
+// };
 // app.use(cors(corsOptions))
 
 // View engine setup
