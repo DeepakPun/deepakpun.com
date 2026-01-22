@@ -153,9 +153,9 @@ app.use(methodOverride('_method'));
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(`${BASE_PATH}/static`, express.static('public'));
 
 // Static files
-app.use('/public', express.static(path.join(__dirname, 'public')))
 // app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public'), {
 //   maxAge: process.env.NODE_ENV === 'production' ? '1d' : '0'
 // }));
