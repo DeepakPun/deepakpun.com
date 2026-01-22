@@ -34,7 +34,7 @@ const renderProjectIndex = async (req, res, next) => {
 }
 
 const renderNewProjectForm = async (req, res) => {
-  res.render(`/projects/new`, { basePath: req.basePath })
+  res.render(`projects/new`, { basePath: req.basePath })
 }
 
 const createNewProject = async (req, res) => {
