@@ -141,10 +141,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  res.locals.messages = req.flash();
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.messages = req.flash();
+//   next();
+// });
 
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
