@@ -46,6 +46,7 @@ const createNewProject = async (req, res) => {
 
     const { error, value } = schema.validate(req.body)
     if (error) {
+      console.log(error.details[0].message)
       req.flash('error', error.details[0].message)
       return res.redirect(`${req.basePath}/projects/new`) // Redirect back to form
     }
