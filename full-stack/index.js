@@ -72,33 +72,39 @@ console.log(`Base path: ${BASE_PATH}`);
 const app = express();
 
 // Security middleware
+// Temporary for testing
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://fonts.googleapis.com",
-        "https://kit.fontawesome.com"
-      ],
-      scriptSrc: [
-        "'self'",
-        "https://cdn.jsdelivr.net",
-        // "https://kit.fontawesome.com"         // FontAwesome JS
-      ],
-      fontSrc: [
-        "'self'",
-        "https://fonts.googleapis.com",
-        "https://kit.fontawesome.com"
-      ],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"]
-    },
-  },
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false
 }));
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       styleSrc: [
+//         "'self'",
+//         "'unsafe-inline'",
+//         "https://cdn.jsdelivr.net",
+//         "https://fonts.googleapis.com",
+//         "https://kit.fontawesome.com"
+//       ],
+//       scriptSrc: [
+//         "'self'",
+//         "https://cdn.jsdelivr.net",
+//         "https://kit.fontawesome.com"         // FontAwesome JS
+//       ],
+//       fontSrc: [
+//         "'self'",
+//         "https://fonts.googleapis.com",
+//         "https://kit.fontawesome.com",
+//         "data:"
+//       ],
+//       imgSrc: ["'self'", "data:", "https:"],
+//       connectSrc: ["'self'"]
+//     },
+//   },
+//   crossOriginEmbedderPolicy: false
+// }));
 
 app.use(compression());
 
@@ -233,44 +239,43 @@ app.get(`${BASE_PATH}/`, (req, res) => {
   }
 });
 
-// Database connection and session setup
+// Mount project routes
+app.use(`${BASE_PATH}/projects`, projectRoutes);
+console.log('✅ Project routes mounted');
+
+// 404 handler
+app.use((req, res) => {
+  console.log(`❌ 404 - Route not found: ${req.originalUrl}`);
+  res.status(404).json({
+    error: 'Not Found',
+    message: `Route ${req.originalUrl} not found`,
+    availableRoutes: [
+      `${BASE_PATH}/`,
+      `${BASE_PATH}/health`,
+    ],
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Error handler
+app.use((error, req, res, next) => {
+  console.error('❌ Application error:', error);
+
+  // Don't log stack traces in production
+  if (process.env.NODE_ENV !== 'production') {
+    console.error('Stack trace:', error.stack);
+  }
+
+  res.status(error.status || 500).json({
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message,
+    timestamp: new Date().toISOString()
+  });
+});
+
 async function initializeApp() {
   try {
     console.log('🚀 Initializing application...');
-
-    // Mount project routes
-    app.use(`${BASE_PATH}/projects`, projectRoutes);
-    console.log('✅ Project routes mounted');
-
-    // 404 handler
-    app.use((req, res) => {
-      console.log(`❌ 404 - Route not found: ${req.originalUrl}`);
-      res.status(404).json({
-        error: 'Not Found',
-        message: `Route ${req.originalUrl} not found`,
-        availableRoutes: [
-          `${BASE_PATH}/`,
-          `${BASE_PATH}/health`,
-        ],
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    // Error handler
-    app.use((error, req, res, next) => {
-      console.error('❌ Application error:', error);
-
-      // Don't log stack traces in production
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Stack trace:', error.stack);
-      }
-
-      res.status(error.status || 500).json({
-        error: 'Internal Server Error',
-        message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message,
-        timestamp: new Date().toISOString()
-      });
-    });
 
     // Start server
     const server = app.listen(PORT, () => {
