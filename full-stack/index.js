@@ -15,7 +15,7 @@ import engine from 'ejs-mate';
 import database from './config/database.js';
 
 // Import routes
-import projectRoutes from './routes/projects.js';
+import projectRoutes from './routes/projectRoutes.js';
 
 // ES6 __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
