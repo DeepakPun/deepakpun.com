@@ -202,7 +202,6 @@ app.use((req, res, next) => {
 // Routes
 console.log('🛣️  Setting up routes...');
 
-
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
   const healthStatus = {
@@ -220,10 +219,14 @@ app.get(`${BASE_PATH}/health`, (req, res) => {
   res.json(healthStatus);
 });
 
-app.get('/', (req, res) => {
-  console.log('📄 Root route accessed, redirecting to base path')
-  res.render('landing', { basePath: BASE_PATH });
-})
+// Mount project routes
+// app.use(`${BASE_PATH}/projects`, projectRoutes);
+app.use(`${BASE_PATH}/projects`, (req, res, next) => {
+  req.basePath = BASE_PATH
+  res.locals.basePath = BASE_PATH 
+  next()
+}, projectRoutes)
+console.log('✅ Project routes mounted');
 
 // Landing page route
 app.get(`${BASE_PATH}/`, (req, res) => {
@@ -239,9 +242,10 @@ app.get(`${BASE_PATH}/`, (req, res) => {
   }
 });
 
-// Mount project routes
-app.use(`${BASE_PATH}/projects`, projectRoutes);
-console.log('✅ Project routes mounted');
+app.get('/', (req, res) => {
+  console.log('📄 Root route accessed, redirecting to base path')
+  res.render('landing', { basePath: BASE_PATH });
+})
 
 // 404 handler
 app.use((req, res) => {
