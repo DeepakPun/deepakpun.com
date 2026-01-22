@@ -130,29 +130,39 @@ app.use((req, res, next) => {
   next();
 });
 
-// Root route - redirect to base path
 app.get('/', (req, res) => {
-  console.log('📄 Root route accessed, redirecting to base path')
-  res.redirect(`${BASE_PATH}/`)
-})
-
-app.get(`${BASE_PATH}/`, (req, res) => {
-  console.log('📄 Rendering landing page')
-  console.log('BASE_PATH:', BASE_PATH)
-
+  console.log('📄 Root route - rendering landing page directly')
   try {
     res.render('landing', {
       basePath: BASE_PATH,
-      // title: 'Deepak Pun - Fullstack Service',
-      // environment: process.env.NODE_ENV || 'development',
-      // timestamp: new Date().toISOString()
+      title: 'Deepak Pun - Fullstack Service',
+      environment: process.env.NODE_ENV || 'development',
+      timestamp: new Date().toISOString()
     })
   } catch (error) {
     console.error('❌ Error rendering landing page:', error)
     res.status(500).json({
       error: 'Template rendering failed',
-      message: error.message,
-      basePath: BASE_PATH
+      message: error.message
+    })
+  }
+})
+
+// Base path route - same landing page
+app.get(`${BASE_PATH}/`, (req, res) => {
+  console.log('📄 Base path route - rendering landing page directly')
+  try {
+    res.render('landing', {
+      basePath: BASE_PATH,
+      title: 'Deepak Pun - Fullstack Service',
+      environment: process.env.NODE_ENV || 'development',
+      timestamp: new Date().toISOString()
+    })
+  } catch (error) {
+    console.error('❌ Error rendering landing page:', error)
+    res.status(500).json({
+      error: 'Template rendering failed',
+      message: error.message
     })
   }
 })
