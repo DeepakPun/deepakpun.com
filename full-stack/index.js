@@ -1,12 +1,12 @@
 // full-stack/index.js
-import { config } from '@dotenvx/dotenvx';
+import { config } from '@dotenvx/dotenvx'
 import express from 'express';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import engine from 'ejs-mate';
-import cors from 'cors';
+// import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
@@ -108,7 +108,7 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200
 };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
