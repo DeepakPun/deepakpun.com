@@ -39,37 +39,40 @@ const renderNewProjectForm = async (req, res) => {
 
 const createNewProject = async (req, res) => {
   try {
-    // 1. Joi Structural Validation
     const schema = Joi.object({
       title: Joi.string().min(3).required(),
       description: Joi.string().min(10).required()
-    });
+    })
 
     const { error, value } = schema.validate(req.body)
-    if (error) {
-      console.log(error.details[0].message)
-      req.flash('error', error.details[0].message)
-      return res.redirect(`${req.basePath}/projects/new`) // Redirect back to form
-    }
 
-    // 2. Profanity Validation
     const { title, description } = value
+
     if (filter.check(title) || filter.check(description)) {
       req.flash('error', "Content contains prohibited language.");
-      return res.redirect(`${req.basePath}/projects/new`) // Redirect back to form
+      console.log('📄 Session after filter flash:', JSON.stringify(req.session, null, 2));
+      return res.redirect(`${req.basePath}/projects/new`);
     }
 
-    // 3. Successful Save
-    const newProject = new Project({ title, description })
-    await newProject.save()
-    req.flash('success', 'Project created successfully!')
-    res.redirect(`${req.basePath}/projects`)
+    console.log('💾 Creating new project...');
+    const newProject = new Project({ title, description });
+    await newProject.save();
+    console.log('✅ Project saved successfully');
+
+    req.flash('success', 'Project created successfully!');
+    console.log('📄 Session after success flash:', JSON.stringify(req.session, null, 2));
+    res.redirect(`${req.basePath}/projects`);
 
   } catch (err) {
-    req.flash('error', "Server error: Could not save project.")
-    res.redirect(`${req.basePath}/projects/new`)
+    console.error('❌ SERVER ERROR:', err);
+    req.flash('error', "Server error: Could not save project.");
+    console.log('📄 Session after error flash:', JSON.stringify(req.session, null, 2));
+    res.redirect(`${req.basePath}/projects/new`);
   }
-}
+
+  console.log('🚀 ===== CREATE PROJECT END =====');
+};
+
 
 const viewProjectDetails = async (req, res, next) => {
   try {
@@ -176,7 +179,7 @@ const deleteProjectById = async (req, res) => {
       return res.redirect(`${req.basePath}/projects`)
     }
 
-    req.flash('success', 'Successfully deleted project!')
+    req.flash('error', 'Successfully deleted project!')
     res.redirect(`${req.basePath}/projects`)
 
   } catch (err) {

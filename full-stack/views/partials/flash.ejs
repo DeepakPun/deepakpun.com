@@ -1,23 +1,30 @@
 <div class="container">
-    <% if (locals.success && locals.success.length > 0) { %>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <%= success %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <% if (success && success.length > 0) { %>
+        <div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+            <strong><%= success %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
         </div>
     <% } %>
-
-    <% if (locals.error && locals.error.length > 0) { %>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <%= error %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <% if (error && error.length > 0) { %>
+        <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+            <strong><%= error %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
         </div>
     <% } %>
+    <% if (warning && warning.length > 0) { %>
+        <div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+            <strong><%= warning %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    <% } %>
+    <% if (info && info.length > 0) { %>
+        <div class="text-center alert alert-info alert-dismissible fade show" role="alert">
+            <strong><%= info %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    <%  } %>
 </div>
-
-<!-- Or even safer: -->
-<!-- <% // if (locals.success) { %>
-<div class="alert alert-success alert-dismissible fade show">
-    <%= success %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<% // } %> -->

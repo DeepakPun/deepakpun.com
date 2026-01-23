@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   console.log('Development mode: Loading .env file');
   // In development, load from .env file
-  config({ path: '.env' });
+  config({ path: '.env.local' });
 }
 
 // Environment validation
@@ -71,6 +71,7 @@ console.log(`Base path: ${BASE_PATH}`);
 
 // Initialize Express app
 const app = express();
+app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => res.status(204).end());
 
 // Security middleware
 // Temporary for testing
@@ -196,8 +197,14 @@ console.log('✅ Session store configured');
 app.use(flash())
 
 app.use((req, res, next) => {
+  const ignoredPaths = ['/favicon.ico', '/.well-known'];
+  if (ignoredPaths.some(path => req.path.startsWith(path))) {
+    return next();
+  }
   res.locals.success = req.flash('success')
   res.locals.error = req.flash('error')
+  res.locals.warning = req.flash('warning')
+  res.locals.info = req.flash('info')
   console.log('Flash messages set:', {
     success: res.locals.success,
     error: res.locals.error
