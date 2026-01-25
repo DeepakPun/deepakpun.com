@@ -26,11 +26,11 @@ tags:
 
 servers:
   # Production server
-  - url: https://deepakpun.com:3001/api/v1
+  - url: https://deepakpun.com/api/v1
     description: Production Server
 
   # Development server
-  - url: http://localhost:3001
+  - url: http://localhost:3001/api/v1
     description: Local Development Server
 
 # 1. Apply security globally to the entire API
