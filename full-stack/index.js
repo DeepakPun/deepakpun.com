@@ -212,24 +212,38 @@ app.use((req, res, next) => {
   if (ignoredPaths.some(path => req.path.startsWith(path))) {
     return next();
   }
-  res.locals.success = req.flash('success')
-  res.locals.error = req.flash('error')
-  res.locals.warning = req.flash('warning')
-  res.locals.info = req.flash('info')
+  // res.locals.success = req.flash('success')
+  // res.locals.error = req.flash('error')
+  // res.locals.warning = req.flash('warning')
+  // res.locals.info = req.flash('info')
 
+  if (req.method === 'GET') {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    res.locals.warning = req.flash('warning');
+    res.locals.info = req.flash('info');
 
-  // Debug
-  console.log(JSON.stringify(res.locals))
-  const hasMessages = res.locals.success.length > 0 || res.locals.error.length > 0 ||
-    res.locals.info.length > 0 || res.locals.warning.length > 0;
-
-  if (hasMessages) {
-    console.log('📨 Flash messages for template:', {
+    // Debug
+    console.log(`📨 GET ${req.path} - Flash consumed:`, JSON.stringify({
       success: res.locals.success,
       error: res.locals.error,
-      info: res.locals.info,
-      warning: res.locals.warning
-    });
+      warning: res.locals.warning,
+      info: res.locals.info
+    }));
+
+    // Debug
+    console.log('RES.LOCALS:', JSON.stringify(res.locals))
+    const hasMessages = res.locals.success.length > 0 || res.locals.error.length > 0 ||
+      res.locals.info.length > 0 || res.locals.warning.length > 0;
+
+    if (hasMessages) {
+      console.log('📨 Flash messages for template:', {
+        success: res.locals.success,
+        error: res.locals.error,
+        info: res.locals.info,
+        warning: res.locals.warning
+      });
+    }
   }
 
   console.log('Flash messages set:', {
@@ -270,6 +284,12 @@ app.use(PROJECTS_ROUTER_PATH, (req, res, next) => {
   next()
 }, projectRoutes)
 console.log('✅ Project routes mounted');
+
+// Add this test route
+app.get('/flash-test', (req, res) => {
+  req.flash('success', 'Test message from GET route!');
+  res.redirect(`${BASE_PATH}/projects`);
+});
 
 // Landing page route
 app.get(`${BASE_PATH}/`, (req, res) => {
