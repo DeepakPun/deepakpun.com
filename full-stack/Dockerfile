@@ -10,8 +10,6 @@ RUN npm install @dotenvx/dotenvx
 
 COPY . .
 
-RUN rm -rf /app/public
-
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 RUN chown -R nodejs:nodejs /app
