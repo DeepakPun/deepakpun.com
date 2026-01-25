@@ -205,6 +205,17 @@ app.use(session({
   }
 }));
 console.log('✅ Session store configured');
+
+app.use((req, res, next) => {
+  if (req.path.includes('/flash-test') || req.path.includes('/projects')) {
+    console.log(`\n🔍 === ${req.method} ${req.path} - START ===`);
+    console.log('🔍 Session ID:', req.sessionID);
+    console.log('🔍 Session flash BEFORE:', JSON.stringify(req.session.flash, null, 2));
+    console.log('🔍 Full session:', JSON.stringify(req.session, null, 2));
+  }
+  next();
+});
+
 app.use(flash())
 
 app.use((req, res, next) => {
@@ -252,6 +263,18 @@ app.use((req, res, next) => {
   });
   next()
 })
+
+app.use((req, res, next) => {
+  if (req.path.includes('/flash-test') || req.path.includes('/projects')) {
+    console.log('🔍 Session flash AFTER middleware:', JSON.stringify(req.session.flash, null, 2));
+    console.log('🔍 res.locals flash:', JSON.stringify({
+      success: res.locals.success,
+      error: res.locals.error
+    }));
+    console.log(`🔍 === ${req.method} ${req.path} - END ===\n`);
+  }
+  next();
+});
 
 // Routes
 console.log('🛣️  Setting up routes...');
