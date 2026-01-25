@@ -3,10 +3,6 @@
   --bs-body-font-family: 'Lato', sans-serif;
 }
 
-/* body {
-  font-family: 'Lato', sans-serif !important;
-} */
-
 .hero-section {
   background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(0, 0, 0, 1) 100%);
 }

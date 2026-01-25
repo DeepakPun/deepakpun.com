@@ -4,6 +4,8 @@
 .env.prod
 **/.dockerignore
 compose.dev.yaml
+Dockerfile.dev
+main-nginx.conf
 
 # Dependencies
 node_modules/

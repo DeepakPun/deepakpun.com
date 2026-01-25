@@ -10,9 +10,7 @@ RUN npm install @dotenvx/dotenvx
 
 COPY . .
 
-# Ensure public directory exists and has correct permissions
-RUN mkdir -p /app/public/styles /app/public/scripts /app/public/images
-RUN chmod -R 755 /app/public
+RUN rm -rf /app/public
 
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
