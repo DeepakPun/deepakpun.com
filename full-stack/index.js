@@ -18,6 +18,26 @@ import database from './config/database.js'
 // Import routes
 import projectRoutes from './routes/projectRoutes.js'
 
+console.log('🧪 === FLASH IMPORT DEBUG START ===');
+console.log('🧪 Flash import type:', typeof flash);
+console.log('🧪 Flash value:', flash);
+console.log('🧪 Flash constructor:', flash?.constructor?.name);
+
+if (typeof flash === 'function') {
+  console.log('✅ Flash is a function - good!');
+} else if (typeof flash === 'object' && flash !== null) {
+  console.log('🔍 Flash is an object, checking properties:');
+  console.log('🔍 Flash keys:', Object.keys(flash));
+  console.log('🔍 Flash.default:', typeof flash.default);
+  if (typeof flash.default === 'function') {
+    console.log('✅ Found flash.default function - using that');
+    // You might need: const flashFn = flash.default;
+  }
+} else {
+  console.log('❌ Flash is not a function or object:', typeof flash);
+}
+console.log('🧪 === FLASH IMPORT DEBUG END ===');
+
 // ES6 __dirname equivalent
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
