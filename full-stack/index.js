@@ -29,10 +29,12 @@ if (process.env.NODE_ENV === 'production') {
   console.log('Production mode: Using environment variables');
   // In production, dotenvx will use environment variables set by Docker/system
   config();
+  // config({ path: '.env.local' });
 } else {
   console.log('Development mode: Loading .env file');
   // In development, load from .env file
   config({ path: '.env.local' });
+  console.log(`database url: ${process.env.MONGODB_URI_FULLSTACK}`)
 }
 
 // Environment validation
@@ -64,13 +66,23 @@ if (missingEnvVars.length > 0) {
 }
 
 // Configuration
+const app = express()
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '/fullstack' : '';
+// const BASE_PATH = 'http://localhost:3002'
 const PORT = process.env.PORT || 3002;
 
 console.log(`Base path: ${BASE_PATH}`);
+if (process.env.NODE_ENV === 'production') {
+  // In production: serve /fullstack/static/* from public/
+  app.use('/fullstack/static', express.static(path.join(__dirname, 'public')));
+  console.log('Production: Static files served at /fullstack/static');
+} else {
+  // In development: serve /static/* from public/
+  app.use('/static', express.static(path.join(__dirname, 'public')));
+  console.log('Development: Static files served at /static');
+}
 
 // Initialize Express app
-const app = express();
 app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => res.status(204).end());
 
 // Security middleware
@@ -154,7 +166,6 @@ app.use(methodOverride('_method'));
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(`${BASE_PATH}/static`, express.static('public'));
 
 // Static files
 // app.use(`${BASE_PATH}/public`, express.static(path.join(__dirname, 'public'), {
@@ -219,6 +230,7 @@ const PROJECTS_ROUTER_PATH = '/projects'
 
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
+// app.get(`/health`, (req, res) => {
   const healthStatus = {
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -245,6 +257,7 @@ console.log('✅ Project routes mounted');
 
 // Landing page route
 app.get(`${BASE_PATH}/`, (req, res) => {
+// app.get(`/`, (req, res) => {
   try {
     console.log('📄 Rendering landing page');
     res.render('landing', { basePath: BASE_PATH });

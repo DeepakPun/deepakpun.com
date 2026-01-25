@@ -47,4 +47,3 @@ shell-scripts
 *.md
 !readme.md
 compose.yaml.broken-backup
-steps.md

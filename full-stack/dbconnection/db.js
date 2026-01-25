@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+import dotenvx from '@dotenvx/dotenvx'
 
 const connectDB = async () => {
   let conn;
@@ -8,6 +9,7 @@ const connectDB = async () => {
       conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK);
     } else {
       console.log('🔧 Connecting to development MongoDB...');
+      dotenvx.config({path: '.env.local'})
       conn = await mongoose.connect(process.env.MONGODB_URI_FULLSTACK_LOCAL);
     }
 
