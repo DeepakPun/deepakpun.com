@@ -74,7 +74,7 @@ const PORT = process.env.PORT || 3002;
 console.log(`Base path: ${BASE_PATH}`);
 if (process.env.NODE_ENV === 'production') {
   // In production: serve /fullstack/static/* from public/
-  app.use('/fullstack/static', express.static(path.join(__dirname, 'public')));
+  app.use('/static', express.static(path.join(__dirname, 'public')));
   console.log('Production: Static files served at /fullstack/static');
 } else {
   // In development: serve /static/* from public/
