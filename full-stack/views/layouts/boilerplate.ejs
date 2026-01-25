@@ -29,7 +29,10 @@
   <body class="d-flex flex-column vh-100">
     <header class="mt-5 container">
       <div class="row justify-content-center">
-        <div class="col-12"><%- include('../partials/flash') %></div>
+        <div class="col-12">
+          <p>Flash messages should be displayed here</p>
+          <%- include('../partials/flash') %>
+        </div>
       </div>
     </header>
 
@@ -45,7 +48,7 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      (() => {
+      ;(() => {
         'use strict'
         const forms = document.querySelectorAll('.needs-validation')
         Array.from(forms).forEach(form => {
