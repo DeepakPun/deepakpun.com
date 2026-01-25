@@ -59,8 +59,8 @@ const createNewProject = async (req, res) => {
     await newProject.save();
     console.log('✅ Project saved successfully');
 
-    req.flash('success', 'Project created successfully!');
     console.log('📄 Session after success flash:', JSON.stringify(req.session, null, 2));
+    req.flash('success', 'Project created successfully!');
     res.redirect(`${req.basePath}/projects`);
 
   } catch (err) {

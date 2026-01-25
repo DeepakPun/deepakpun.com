@@ -216,6 +216,22 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error')
   res.locals.warning = req.flash('warning')
   res.locals.info = req.flash('info')
+
+
+  // Debug
+  console.log(JSON.stringify(res.locals))
+  const hasMessages = res.locals.success.length > 0 || res.locals.error.length > 0 ||
+    res.locals.info.length > 0 || res.locals.warning.length > 0;
+
+  if (hasMessages) {
+    console.log('📨 Flash messages for template:', {
+      success: res.locals.success,
+      error: res.locals.error,
+      info: res.locals.info,
+      warning: res.locals.warning
+    });
+  }
+
   console.log('Flash messages set:', {
     success: res.locals.success,
     error: res.locals.error
@@ -230,7 +246,7 @@ const PROJECTS_ROUTER_PATH = '/projects'
 
 // Health check endpoint
 app.get(`${BASE_PATH}/health`, (req, res) => {
-// app.get(`/health`, (req, res) => {
+  // app.get(`/health`, (req, res) => {
   const healthStatus = {
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -257,7 +273,7 @@ console.log('✅ Project routes mounted');
 
 // Landing page route
 app.get(`${BASE_PATH}/`, (req, res) => {
-// app.get(`/`, (req, res) => {
+  // app.get(`/`, (req, res) => {
   try {
     console.log('📄 Rendering landing page');
     res.render('landing', { basePath: BASE_PATH });
