@@ -84,7 +84,7 @@ app.get('/health', (req, res) => {
 
 // 5. ROUTES
 // This should come prior to / when using docker. 
-app.use('/api/v1/projects', portfolioGuard, projectRoutes)
+app.use('/v1/projects', portfolioGuard, projectRoutes)
 
 const swaggerDocument = YAML.load(path.join(import.meta.dirname, './config/swagger.yaml'))
 // import swaggerDocument from './swagger.json' with { type: 'json'}
