@@ -23,8 +23,9 @@ const ProjectsList = () => {
     } finally {
       setLoading(false)
     }
-  };
+  }
 
+  // eslint-disable-next-line
   const handleDelete = async (projectId) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
@@ -66,80 +67,81 @@ const ProjectsList = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Projects</h1>
-          <p className="text-gray-600">Manage your projects and track progress</p>
-        </div>
-        <div className="flex gap-4">
-          <Link
-            to="/ui/"
-            className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            ← Back to Home
-          </Link>
-          <Link
-            to="/ui/projects/new"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-colors"
-          >
-            + New Project
-          </Link>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#0f172a] text-white p-6">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/3 bg-blue-500/5 blur-[100px] pointer-events-none" />
 
-      {projects.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">📋</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No projects yet</h3>
-          <p className="text-gray-600 mb-6">Get started by creating your first project</p>
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            All Projects
+          </h1>
+          <p className="text-slate-400 text-lg">
+            Explore some web applications and experiments
+          </p>
+        </div>
+
+        <div className="mb-8 flex justify-center">
           <Link
             to="/ui/projects/new"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
           >
-            + Create First Project
+            <span>+</span>
+            Create New Project
           </Link>
         </div>
-      ) : (
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <div key={project._id} className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.title}</h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">{project.description}</p>
-
-                <div className="flex justify-between items-center">
-                  <Link
-                    to={`/ui/projects/${project._id}`}
-                    className="text-blue-600 hover:text-blue-500 font-medium"
-                  >
-                    View Details →
-                  </Link>
-
-                  <div className="flex gap-2">
-                    <Link
-                      to={`/ui/projects/${project._id}/edit`}
-                      className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
-                      title="Edit project"
-                    >
-                      ✏️
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(project._id)}
-                      className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-                      title="Delete project"
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
+          {projects.map(project => (
+            <div
+              key={project._id}
+              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 hover:bg-slate-800/70 transition-all duration-200 hover:scale-105"
+            >
+              <h3 className="text-xl font-semibold mb-3 text-white">
+                {project.title}
+              </h3>
+              <p className="text-slate-300 mb-4 line-clamp-3">
+                {project.description}
+              </p>
+              <div className="flex gap-2">
+                <Link
+                  to={`/ui/projects/${project._id}`}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors"
+                >
+                  View Details
+                </Link>
+                <Link
+                  to={`/ui/projects/${project._id}/edit`}
+                  className="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded text-sm transition-colors"
+                >
+                  Edit
+                </Link>
+                {/* <button className='bg-red-200 text-red-900 rounded px-3' onClick={() => handleDelete(project._id)}>Delete</button> */}
               </div>
             </div>
           ))}
         </div>
-      )}
+
+        {loading && (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+            <p className="mt-2 text-slate-400">Loading projects...</p>
+          </div>
+        )}
+
+        {!loading && projects.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-slate-400 text-lg mb-4">No projects found</p>
+            <Link
+              to="/ui/projects/new"
+              className="text-blue-400 hover:text-blue-300 underline"
+            >
+              Create your first project
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
-  )
+  );
 }
 
 export default ProjectsList
