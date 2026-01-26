@@ -80,14 +80,63 @@ const ProjectsList = () => {
           </p>
         </div>
 
-        <div className="mb-8 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-          <div className="flex items-start gap-3">
-            <div className="text-yellow-400 text-xl shrink-0 mt-0.5">⚠️</div>
-            <div>
-              <h3 className="text-yellow-400 font-semibold mb-1">Demo Notice</h3>
-              <p className="text-slate-300 text-sm">
-                This is a demo portfolio application. All project data is automatically deleted after 24 hours to keep the demo clean and functional.
-              </p>
+        <div className="mb-8 bg-linear-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="text-yellow-400 text-2xl hrink-0">⚠️</div>
+            <div className="flex-1">
+              <h3 className="text-yellow-400 font-bold text-lg mb-2">Demo Portfolio Notice</h3>
+              <div className="space-y-3 text-slate-300">
+                <p className="text-sm">
+                  <strong>This is a demonstration portfolio application.</strong> To maintain optimal performance and showcase functionality:
+                </p>
+
+                <div className="bg-slate-800/30 rounded-lg p-4">
+                  <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
+                    <span className="text-red-400">🕒</span>
+                    Data Retention Policy
+                  </h4>
+                  <ul className="text-sm space-y-1 ml-4">
+                    <li className="flex items-center gap-2">
+                      <span className="text-yellow-400">•</span>
+                      All project data is automatically deleted after <strong>24 hours</strong>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-yellow-400">•</span>
+                      Feel free to create, edit, and test all features
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-yellow-400">•</span>
+                      Data resets daily to keep the demo fresh
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-slate-800/30 rounded-lg p-4">
+                  <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
+                    <span className="text-blue-400">🛡️</span>
+                    Content Moderation
+                  </h4>
+                  <ul className="text-sm space-y-1 ml-4">
+                    <li className="flex items-center gap-2">
+                      <span className="text-blue-400">•</span>
+                      Using <strong>leo-profanity</strong> npm library for content filtering
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-blue-400">•</span>
+                      Inappropriate language will prevent data submission
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-blue-400">•</span>
+                      Keeps the demo environment family-friendly
+                    </li>
+                  </ul>
+                </div>
+
+                <p className="text-xs text-slate-400 mt-3 flex items-center gap-2">
+                  <span>💡</span>
+                  <span>This ensures the demo remains clean, functional, and appropriate for all visitors.</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -157,3 +206,38 @@ const ProjectsList = () => {
 }
 
 export default ProjectsList
+
+
+
+/*
+<div className="mb-8 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="text-yellow-400 text-2xl flex-shrink-0">⚠️</div>
+            <div className="flex-1">
+              <h3 className="text-yellow-400 font-bold text-lg mb-2">Demo Portfolio Notice</h3>
+              <div className="space-y-2 text-slate-300">
+                <p className="text-sm">
+                  <strong>This is a demonstration portfolio application.</strong> To maintain optimal performance and showcase functionality:
+                </p>
+                <ul className="text-sm space-y-1 ml-4">
+                  <li className="flex items-center gap-2">
+                    <span className="text-yellow-400">•</span>
+                    All project data is automatically deleted after <strong>24 hours</strong>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-yellow-400">•</span>
+                    Feel free to create, edit, and test all features
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-yellow-400">•</span>
+                    Data resets daily to keep the demo fresh
+                  </li>
+                </ul>
+                <p className="text-xs text-slate-400 mt-3">
+                  💡 This ensures the demo remains clean and functional for all visitors.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+*/
