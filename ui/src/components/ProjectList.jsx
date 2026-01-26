@@ -80,6 +80,18 @@ const ProjectsList = () => {
           </p>
         </div>
 
+        <div className="mb-8 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <div className="text-yellow-400 text-xl shrink-0 mt-0.5">⚠️</div>
+            <div>
+              <h3 className="text-yellow-400 font-semibold mb-1">Demo Notice</h3>
+              <p className="text-slate-300 text-sm">
+                This is a demo portfolio application. All project data is automatically deleted after 24 hours to keep the demo clean and functional.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="mb-8 flex justify-center">
           <Link
             to="/ui/projects/new"
