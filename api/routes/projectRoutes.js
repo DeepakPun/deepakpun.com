@@ -11,6 +11,7 @@ router.route('/')
 router.route('/:projectId')
   .get(getSingleProject)
   .patch(validate(updateProjectSchema), updateProject)
+  .put(validate(updateProjectSchema), updateProject)
   .delete(deleteProject)
 
 export default router

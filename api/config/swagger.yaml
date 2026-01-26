@@ -30,7 +30,7 @@ servers:
     description: Production Server
 
   # Development server
-  - url: http://localhost:3001/api/v1
+  - url: http://localhost:3001/v1
     description: Local Development Server
 
 # 1. Apply security globally to the entire API

@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import { motion } from 'framer-motion'
+import { Link } from 'react-router'
 
 const Landing = () => {
   return (
@@ -30,17 +31,79 @@ const Landing = () => {
           A high-performance <span className="text-white font-medium">React interface</span> specifically engineered to consume and visualize the <span className="text-white font-medium">Project Management API.</span>
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Project Management Card */}
+            <div className="bg-linear-to-br from-purple-50 to-blue-50 p-6 rounded-2xl border border-purple-100">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-3xl">🚀</span>
+                <h3 className="text-xl font-bold text-slate-800">Project Management</h3>
+              </div>
+              <p className="text-slate-600 mb-4">
+                Create, manage, and organize your projects with full CRUD operations.
+                Built with React and powered by a secure REST API.
+              </p>
+              <Link
+                to="/ui/projects"
+                className="w-full px-6 py-3 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 hover:scale-105 flex items-center justify-center gap-2 text-white"
+              >
+                Launch Projects App
+              </Link>
+            </div>
+
+            <div className="bg-linear-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-3xl">📚</span>
+                <h3 className="text-xl font-bold text-slate-800">API Documentation</h3>
+              </div>
+              <p className="text-slate-600 mb-4">
+                Explore the interactive Swagger documentation for the Projects API.
+                Test endpoints, view schemas, and understand the API structure.
+              </p>
+              <a
+                className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:scale-105 flex items-center justify-center gap-2 text-white"
+                // href='http://localhost:3001'
+                href='https://www.deepakpun.com/api'
+                target='_blank'
+                rel="noopener noreferrer"
+              >
+                View API Docs
+              </a>
+            </div>
+          </div>
+
+          {/* GitHub Repository - Secondary action */}
+          <div className="text-center">
+            <a
+              href='https://www.github.com/DeepakPun/deepakpun.com'
+              target='_blank'
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg font-medium transition-all text-white"
+            >
+              <span>⭐</span>
+              View Source Code on GitHub
+            </a>
+          </div>
+        </div>
+
+        {/* <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <Link
+            to="/projects"
+            className="w-full sm:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-xl font-bold transition-all shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2 text-white"
+          >
+            <span>🚀</span>
+            Manage Projects
+          </Link>
           <a className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
             href='http://localhost:3001/'
             target='_blank'
           >
             Explore Documentation
           </a>
-          <button className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
+          <a href='https://www.github.com/DeepakPun/deepakpun.com' target='_blank' className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
             View GitHub Repository
-          </button>
-        </div>
+          </a>
+        </div> */}
 
         <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-slate-500 font-mono text-sm border-t border-slate-800/50 pt-8">
           <span className="flex items-center gap-2 hover:text-blue-400 transition-colors cursor-default">
@@ -53,7 +116,7 @@ const Landing = () => {
             <span className="text-blue-400">/</span> MongoDB Atlas
           </span>
           <span className="flex items-center gap-2 hover:text-emerald-400 transition-colors cursor-default">
-            <span className="text-emerald-400">/</span> AWS EC2
+            <span className="text-emerald-400">/</span> Digital Ocean
           </span>
         </div>
       </motion.div>
