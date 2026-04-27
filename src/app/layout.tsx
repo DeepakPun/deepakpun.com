@@ -34,13 +34,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        {/* 
-          CREDITS: 
-          Favicon: Initial monogram generated via Favicon.io 
-          Tech Icons: Font Awesome (Free License), Simple Icons, React Icons
-        */}
-      </head>
       <body
         suppressHydrationWarning
         className={`${inter.className} h-screen overflow-hidden flex flex-col bg-[#020617]`}
