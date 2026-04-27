@@ -26,13 +26,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         {/* 
@@ -41,14 +41,14 @@ export default function RootLayout({
           Tech Icons: Font Awesome (Free License), Simple Icons, React Icons
         */}
       </head>
-      <body className={`${inter.className} h-screen overflow-hidden flex flex-col bg-[#020617]`}>
+      <body
+        suppressHydrationWarning
+        className={`${inter.className} h-screen overflow-hidden flex flex-col bg-[#020617]`}
+      >
         <BackgroundGrid />
-
         <Navbar />
-
         <div className="flex flex-col md:flex-row flex-1 overflow-hidden relative z-10">
           <Sidebar />
-
           <main className="flex-1 overflow-hidden relative">
             <div className="h-full overflow-y-auto no-scrollbar relative">
               {children}
