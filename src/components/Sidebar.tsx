@@ -3,7 +3,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { NAV_LINKS } from '@/constants/navigation'
-import { SiGithub, SiX } from 'react-icons/si'
+import {
+  SiGithub,
+  //  SiX
+} from 'react-icons/si'
 import { SlSocialLinkedin } from 'react-icons/sl'
 
 export default function Sidebar() {
@@ -19,7 +22,7 @@ export default function Sidebar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`relative px-6 py-4 text-2xl font-black transition-colors duration-300 rounded-xl flex items-center gap-4 group ${isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
+              className={`relative px-6 py-4 text-xl font-black transition-colors duration-300 rounded-xl flex items-center gap-4 group ${isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
                 }`}
             >
               {isActive && (
@@ -37,7 +40,7 @@ export default function Sidebar() {
               )}
               <span className="relative z-10 flex items-center gap-4">
                 <Icon size={28} className={isActive ? 'text-lime-400' : 'group-hover:text-white/80'} />
-                {link.name.toUpperCase()}
+                {link.name}
               </span>
             </Link>
           )
