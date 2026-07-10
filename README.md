@@ -1,31 +1,60 @@
-# Portfolio | Deepak Pun
+# Portfolio | Deepak Pun 🚀
 
-A minimalist, high-performance portfolio built to showcase my projects, tools, and technical journey.
+A minimalist, high-performance web portfolio built to showcase automated cloud deployment workflows, full-stack applications, and my technical systems journey.
 
-## 🚀 Tech Stack
+<table>
+  <tr>
+    <td>
+      <a href="https://flowcv.me" target="_blank" rel="noopener noreferrer">
+        <strong>📄 View Resume</strong>
+      </a>
+    </td>
+    <td>
+      <a href="https://deepakpun.com" target="_blank" rel="noopener noreferrer">
+        <strong>🌐 Visit Live Site</strong>
+      </a>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🛠 Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org) (App Router)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
 - **Deployment:** [Vercel](https://vercel.com)
-- **Icons/Assets:** [e.g., Lucide React, FontAwesome]
 
-## 🛠️ Key Features
+## ⚙️ Key Features
 
-- **Responsive Design:** Optimized for mobile, tablet, and desktop.
-- **Performance:** Achieves high Lighthouse scores via Next.js optimizations.
+- **DevOps Simulation:** Embedded visual CI/CD pipeline detailing real-time version iteration paths.
+- **Responsive Layout:** Adaptive breakpoints serving liquid components to mobile, tablet, and desktop viewports.
+- **Optimized Performance:** Achieves elite Lighthouse compilation metrics utilizing Next.js structural optimizations.
 
-## 🌐 Deployment
+## 🌐 Deployment & Architecture
 
-This project is automatically deployed via **Vercel**. Every push to the `main` branch triggers a production build.
-Live site: [https://deepakpun.com](https://deepakpun.com)
+This repository operates on a continuous integration model. Every push direct to the `main` branch automatically invokes automated compilation webhooks, driving live production updates directly to Vercel.
 
-## 🏗️ Getting Started
+- **Production URL:** [https://deepakpun.com](https://deepakpun.com)
+- **Target Delivery Environments:** Managed code pipelines executing workflows across local nodes, GitHub Actions scripts, and cloud resources.
 
-To run this project locally:
+## 🏗 Getting Started
 
-1. Clone the repo:
+To execute this architecture inside an isolated local node:
+
+1. **Clone the repository:**
+
+   ```bash
    git clone https://github.com/DeepakPun/deepakpun.com
-2. Install dependencies:
+   ```
+
+2. **Initialize target dependencies:**
+
+   ```bash
    npm install
-3. Run the development server:
+   ```
+
+3. **Boot local development engine:**
+   ```bash
    npm run dev
+   ```
