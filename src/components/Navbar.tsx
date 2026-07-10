@@ -36,7 +36,7 @@ export default function Navbar() {
       {/* 2. CENTER LAYER: Centered Blog Node (Hidden on mobile, perfectly centered on desktop) */}
       <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
         <a
-          href="https://deepakpun-blog.vercel.app/"
+          href="https://deepakpun-blog.vercel.app/blog"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-sm font-mono font-black tracking-widest text-lime-400 bg-lime-400/15 border border-lime-400/40 hover:bg-lime-400/25 hover:border-lime-400 transition-all duration-300 shadow-[0_0_12px_rgba(163,230,53,0.15)] hover:shadow-[0_0_20px_rgba(163,230,53,0.4)] group relative overflow-hidden"
@@ -84,7 +84,7 @@ export default function Navbar() {
 
               {/* Mobile-only fallback link for the Blog inside the sliding menu list */}
               <a
-                href="https://vercel.app"
+                href="https://vercel.app/blog"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
