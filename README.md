@@ -5,7 +5,7 @@ A minimalist, high-performance web portfolio built to showcase automated cloud d
 <table>
   <tr>
     <td>
-      <a href="https://flowcv.me" target="_blank" rel="noopener noreferrer">
+      <a href="https://flowcv.com/resume/ssi26sqrov46" target="_blank" rel="noopener noreferrer">
         <strong>📄 View Resume</strong>
       </a>
     </td>
