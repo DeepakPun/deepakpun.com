@@ -84,7 +84,7 @@ export default function Navbar() {
 
               {/* Mobile-only fallback link for the Blog inside the sliding menu list */}
               <a
-                href="https://vercel.app/blog"
+                href="https://deepakpun-blog.vercel.app/blog"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
