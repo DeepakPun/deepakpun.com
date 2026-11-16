@@ -95,7 +95,7 @@ export default function EcosystemLabsMenu() {
       {/* 2. Engineering Blog Banner (Middle Tier) */}
       <motion.section variants={itemVars}>
         <a
-          href="https://blog.deepakpun.com"
+          href="https://blog.deepakpun.com/blog"
           target="_blank"
           rel="noopener noreferrer"
           className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 md:px-6 rounded-2xl bg-zinc-900/80 hover:bg-zinc-900 backdrop-blur-xl border border-white/15 hover:border-lime-400/40 transition-all duration-300 shadow-lg"
