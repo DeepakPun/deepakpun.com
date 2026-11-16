@@ -84,7 +84,7 @@ export default function Navbar() {
 
               {/* Mobile-only fallback link for the Blog inside the sliding menu list */}
               <a
-                href="https://deepakpun-blog.vercel.app/blog"
+                href="https://blog.deepakpun.com/blog"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
@@ -115,7 +115,7 @@ export default function Navbar() {
 
                 <div className="px-2 mb-6">
                   <Link
-                    href="https://deepakpun-labs.com"
+                    href="https://labs.deepakpun.com"
                     target="_blank"
                     className="group flex flex-col p-4 rounded-2xl bg-[#020617]/60 backdrop-blur-2xl border border-white/10 hover:border-teal-400/50 hover:bg-[#020617]/80 transition-all duration-300 shadow-2xl relative overflow-hidden"
                   >
@@ -137,7 +137,7 @@ export default function Navbar() {
                   </Link>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-black/20 backdrop-blur-sm border border-white/5">
+                {/* <div className="p-4 rounded-2xl bg-black/20 backdrop-blur-sm border border-white/5">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between font-mono text-[10px] tracking-[0.2em]">
                       <span className="text-white/50 uppercase font-bold">
@@ -165,7 +165,7 @@ export default function Navbar() {
                       * Active CI/CD: Iterative UI patches in progress.{" "}
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </nav>
           </motion.div>
