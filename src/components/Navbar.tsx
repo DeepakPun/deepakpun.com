@@ -34,7 +34,7 @@ export default function Navbar() {
       </div>
 
       {/* 2. CENTER LAYER: Centered Blog Node (Hidden on mobile, perfectly centered on desktop) */}
-      <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+      {/* <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
         <a
           href="https://deepakpun-blog.vercel.app/blog"
           target="_blank"
@@ -48,7 +48,7 @@ export default function Navbar() {
             ↗{" "}
           </span>
         </a>
-      </div>
+      </div> */}
 
       {/* 3. RIGHT LAYER: Interactive Actions / Mobile Menu Button */}
       <button

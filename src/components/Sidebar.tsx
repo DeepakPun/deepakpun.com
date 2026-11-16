@@ -69,7 +69,7 @@ export default function Sidebar() {
 
         <div className="px-2 mb-6">
           <Link
-            href="https://deepakpun-labs.com"
+            href="https://labs.deepakpun.com"
             target="_blank"
             className="group flex flex-col p-4 rounded-2xl bg-[#020617]/60 backdrop-blur-2xl border border-white/10 hover:border-teal-400/50 hover:bg-[#020617]/80 transition-all duration-300 shadow-2xl relative overflow-hidden"
           >
