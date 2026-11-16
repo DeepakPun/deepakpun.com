@@ -93,7 +93,7 @@ export default function Sidebar() {
           </Link>
         </div>
 
-        <div className="p-4 rounded-2xl bg-black/20 backdrop-blur-sm border border-white/5">
+        {/* <div className="p-4 rounded-2xl bg-black/20 backdrop-blur-sm border border-white/5">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between font-mono text-[10px] tracking-[0.2em]">
               <span className="text-white/50 uppercase font-bold">Build_Version</span>
@@ -115,7 +115,7 @@ export default function Sidebar() {
               * Active CI/CD: Iterative UI patches in progress.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </aside>
   )
