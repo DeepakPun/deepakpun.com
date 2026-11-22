@@ -14,36 +14,63 @@ export default function Sidebar() {
     <aside className="hidden md:flex w-80 h-full bg-gradient-devops p-8 flex-col justify-between border-r border-white/10 shadow-2xl relative">
       {/* Top Section: Internal Routes + External Tech Notes */}
       <div className="flex flex-col">
-        <nav className="flex flex-col gap-4 relative">
+        <nav className="flex flex-col gap-3 relative font-mono">
           {NAV_LINKS.map((link) => {
             const isActive =
               link.href === '/'
                 ? pathname === '/'
                 : pathname.startsWith(link.href)
             const Icon = link.icon
+
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative px-6 py-4 text-xl font-black transition-colors duration-300 rounded-xl flex items-center gap-4 group ${isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
+                className={`relative px-5 py-3.5 text-lg tracking-tight transition-all duration-300 rounded-xl flex items-center gap-4 group border ${isActive
+                  ? 'text-white font-bold bg-slate-950/75 border-lime-400/40 shadow-lg shadow-black/25'
+                  : 'text-slate-100/85 font-medium bg-slate-950/30 border-white/10 hover:bg-slate-950/55 hover:text-white hover:border-white/25'
                   }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-highlight"
-                    className="absolute inset-0 rounded-xl overflow-hidden"
+                    className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   >
                     <div className="absolute bottom-0 left-0 w-full h-0.5 bg-lime-400 shadow-[0_0_15px_#a3e635]" />
                     <div
-                      className="absolute inset-0 bg-linear-to-t from-lime-400/20 to-transparent opacity-50"
+                      className="absolute inset-0 bg-linear-to-t from-lime-400/20 to-transparent opacity-60"
                       style={{ maskImage: 'radial-gradient(50% 100% at 50% 100%, black, transparent)' }}
                     />
                   </motion.div>
                 )}
                 <span className="relative z-10 flex items-center gap-4">
-                  <Icon size={28} className={isActive ? 'text-lime-400' : 'group-hover:text-white/80'} />
-                  {link.name}
+                  <Icon
+                    size={24}
+                    className={
+                      isActive
+                        ? 'text-lime-400 drop-shadow-[0_0_8px_rgba(163,230,53,0.5)]'
+                        : 'text-slate-300 group-hover:text-lime-300 transition-colors'
+                    }
+                  />
+                  <span className="drop-shadow-xs">
+                    {link.name.split('/').map((segment, index) => (
+                      <span key={index}>
+                        {index > 0 && (
+                          <span
+                            className={
+                              isActive
+                                ? 'text-lime-400 font-bold'
+                                : 'text-slate-400 group-hover:text-lime-300/80'
+                            }
+                          >
+                            /
+                          </span>
+                        )}
+                        {segment}
+                      </span>
+                    ))}
+                  </span>
                 </span>
               </Link>
             )
