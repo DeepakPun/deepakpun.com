@@ -256,6 +256,7 @@ export default function EcosystemLabsMenu() {
                           >
                             <FaGithub className="w-3.5 h-3.5 shrink-0" />
                             <span>Source</span>
+                            <ArrowUpRight className="w-4 h-4 shrink-0 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
                           </a>
                         )}
 
@@ -268,6 +269,7 @@ export default function EcosystemLabsMenu() {
                           >
                             <BookOpen className="w-3.5 h-3.5 shrink-0" />
                             <span>{capstone.docsLabel || "How I Did It"}</span>
+                            <ArrowUpRight className="w-4 h-4 shrink-0 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
                           </a>
                         )}
                       </div>
