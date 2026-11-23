@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Roboto } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ExternalLink, Terminal, BookOpen, ArrowUpRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import {
@@ -10,9 +10,22 @@ import {
   CapstoneTier,
 } from "@/constants/capstones";
 
-const roboto = Roboto({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["700"],
+  variable: "--font-display",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-mono",
 });
 
 const containerVars = {
@@ -106,8 +119,28 @@ export default function EcosystemLabsMenu() {
       variants={containerVars}
       initial="hidden"
       animate="visible"
-      className={`w-full max-w-6xl mx-auto px-4 sm:px-6 pt-16 md:pt-24 pb-20 space-y-10 ${roboto.className}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} font-sans w-full max-w-6xl mx-auto px-4 sm:px-6 pt-8 md:pt-24 pb-20 space-y-10`}
     >
+      <motion.header variants={itemVars} className="space-y-4 max-w-3xl">
+        <div className="flex items-center gap-2.5">
+          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+          <span className="font-mono text-xs font-bold uppercase tracking-[0.3em] text-emerald-400">
+            Production_Sandbox // Capstones
+          </span>
+        </div>
+
+        <h1 className="font-(family-name:--font-display) text-4xl md:text-6xl font-bold text-white tracking-tight">
+          Deployed <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-emerald-400">Architectures.</span>
+        </h1>
+
+        <p className="text-base md:text-lg text-white/60 leading-relaxed font-normal">
+          End-to-end full-stack and cloud systems built from scratch—complete with
+          architecture notes, CI/CD workflows, and deliberate{" "}
+          <span className="text-amber-300/90 font-mono text-sm">FinOps teardowns</span>{" "}
+          to keep cloud spend at $0 post-verification.
+        </p>
+      </motion.header>
+
       {CAPSTONE_PROJECTS.map((capstone) => {
         const tierStyle = TIER_STYLES[capstone.tier];
         const statusStyle = STATUS_STYLES[capstone.status];
@@ -143,13 +176,13 @@ export default function EcosystemLabsMenu() {
                   {/* Top Badges Row */}
                   <div className="flex flex-wrap items-center gap-2.5">
                     <span
-                      className={`px-3 py-1 rounded-full border text-xs font-mono font-black uppercase tracking-widest ${tierStyle.numberBadge}`}
+                      className={`px-3 py-1 rounded-full border text-xs font-mono font-bold uppercase tracking-widest ${tierStyle.numberBadge}`}
                     >
                       CAPSTONE // {capstone.capstoneNumber}
                     </span>
 
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                      <span className="text-xs font-black uppercase tracking-[0.2em] text-white/80">
+                      <span className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-white/80">
                         {capstone.highlightText}
                       </span>
                     </div>
@@ -169,13 +202,13 @@ export default function EcosystemLabsMenu() {
                   </div>
 
                   {/* Title */}
-                  <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.05] tracking-tighter">
+                  <h1 className="font-(family-name:--font-display) text-3xl md:text-5xl font-bold text-white leading-[1.08] tracking-tight">
                     {leadingTitle && `${leadingTitle} `}
                     <span className={tierStyle.titleAccent}>{lastWord}</span>
                   </h1>
 
                   {/* Summary */}
-                  <p className="text-sm md:text-base text-blue-100/70 leading-relaxed font-medium max-w-2xl">
+                  <p className="text-sm md:text-base text-blue-100/70 leading-relaxed font-normal max-w-2xl">
                     {capstone.summary}
                   </p>
 
@@ -184,7 +217,7 @@ export default function EcosystemLabsMenu() {
                     {capstone.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 text-xs font-semibold text-blue-200/80 bg-white/5 border border-white/10 rounded-lg"
+                        className="font-mono px-3 py-1 text-xs font-medium text-blue-200/80 bg-white/5 border border-white/10 rounded-lg"
                       >
                         {tech}
                       </span>
@@ -203,12 +236,14 @@ export default function EcosystemLabsMenu() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`px-6 py-4 text-white font-bold text-sm rounded-2xl flex items-center justify-center gap-2.5 shadow-xl border group/btn transition-all duration-300 ${tierStyle.primaryBtn}`}
+                        className={`font-mono px-6 py-4 text-white font-bold text-xs uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2.5 shadow-xl border group/btn transition-all duration-300 ${tierStyle.primaryBtn}`}
                       >
                         <Terminal className="w-4 h-4 text-white/80 shrink-0" />
                         <span>{capstone.liveLabel || "Launch Live App"}</span>
                         <ExternalLink className="w-4 h-4 shrink-0 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
                       </motion.a>
+
+                      {/* Keep your existing Secondary Row (Source / Docs / Fallback) here */}
 
                       {/* Secondary Row: Source + How I Did It */}
                       <div className="flex items-center gap-2.5">

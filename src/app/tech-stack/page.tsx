@@ -50,7 +50,7 @@ const categories = [
 export default function TechStack() {
   return (
     <div className="min-h-full w-full p-6 md:p-12 lg:p-16 flex flex-col justify-start md:justify-center py-24">
-      <h2 className="text-4xl md:text-6xl font-black text-white mb-12 tracking-tighter">
+      <h2 className="font-display text-4xl md:text-6xl font-bold text-white mb-12 tracking-tight">
         SYSTEM_STACK
       </h2>
 
@@ -63,7 +63,7 @@ export default function TechStack() {
             transition={{ delay: idx * 0.1 }}
             className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl flex flex-col gap-6"
           >
-            <h3 className="text-xs font-mono tracking-[0.3em] text-teal-400 uppercase border-b border-white/10 pb-4">
+            <h3 className="font-mono text-xs font-bold tracking-[0.3em] text-teal-400 uppercase border-b border-white/10 pb-4">
               {cat.title}
             </h3>
 
@@ -71,16 +71,15 @@ export default function TechStack() {
               {cat.techs.map((tech) => (
                 <div
                   key={tech.name}
-                  className="flex gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:border-teal-400/50 transition-colors group cursor-default"
+                  className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 hover:border-teal-400/50 transition-colors group cursor-default"
                 >
-                  <tech.icon className="text-xl text-teal-400 group-hover:text-white transition-colors" />
-                  <span className="text-sm font-extrabold text-white uppercase tracking-widest leading-none">
+                  <tech.icon className="text-xl text-teal-400 group-hover:text-white transition-colors shrink-0" />
+                  <span className="font-mono text-xs font-bold text-white uppercase tracking-[0.18em] leading-none">
                     {tech.name}
                   </span>
                 </div>
               ))}
             </div>
-
           </motion.div>
         ))}
       </div>

@@ -1,42 +1,47 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import Sidebar from "@/components/Sidebar"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import BackgroundGrid from "@/components/BackgroundGrid"
 
-const inter = Inter({ subsets: ["latin"] })
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-display",
 })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-mono",
 })
 
 export const metadata: Metadata = {
-  title: "Deepak Pun",
-  description: "MERN, Flask, NextJS developer and open-source enthusiast.",
+  title: "Deepak Pun | Full-Stack Developer & Cloud Engineer",
+  description:
+    "Full-Stack Developer and Cloud Engineer building modern web applications and automated CI/CD pipelines across AWS and DigitalOcean.",
 }
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body
         suppressHydrationWarning
-        className={`${inter.className} h-screen overflow-hidden flex flex-col bg-[#020617]`}
+        className={`${inter.className} font-sans h-screen overflow-hidden flex flex-col bg-[#020617]`}
       >
         <BackgroundGrid />
         <Navbar />

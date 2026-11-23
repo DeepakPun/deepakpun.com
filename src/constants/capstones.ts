@@ -40,20 +40,24 @@ export const CAPSTONE_PROJECTS: CapstoneProject[] = [
         ],
         status: "LIVE",
     },
-    // Template for Capstone 02+ (No liveLink — promotes "How I Did It" to primary CTA):
-    // {
-    //     id: "capstone-02",
-    //     capstoneNumber: "02",
-    //     tier: "scaled",
-    //     highlightText: "Infrastructure as Code & Security",
-    //     title: "Cloud Cluster Ops",
-    //     summary:
-    //         "Leveling up to automated Kubernetes orchestration, Terraform provisioning, and shift-left security scanning.",
-    //     docsLink: "https://deepakpun.com",
-    //     docsLabel: "How I Did It",
-    //     githubLink: "https://github.com...",
-    //     finopsNote: "Cluster torn down post-validation (FinOps)",
-    //     techStack: ["Terraform", "AWS EKS", "GitHub Actions", "Trivy", "ArgoCD"],
-    //     status: "ARCHIVED_FINOPS",
-    // },
+    {
+        id: "capstone-02",
+        capstoneNumber: "02",
+        tier: "scaled",
+        highlightText: "Serverless // AWS Cloud",
+        title: "Serverless Full-Stack",
+        summary:
+            "A decoupled React and Express REST architecture deployed natively on AWS—combining private S3 storage, CloudFront edge routing, AWS Amplify CI/CD, and Lambda + API Gateway with strict IAM and CORS controls, followed by a full FinOps teardown.",
+        docsLink: "https://notes.deepakpun.com/notes/en/aws-serverless-fullstack/",
+        docsLabel: "How I Did It",
+        githubLink: "https://github.com/DeepakPun/aws-fullstack-dep.git",
+        techStack: [
+            "AWS Lambda & API Gateway",
+            "S3 & CloudFront (OAC)",
+            "AWS Amplify CI/CD",
+            "IAM & CORS",
+            "React & Express",
+        ],
+        status: "ARCHIVED_FINOPS",
+    },
 ];

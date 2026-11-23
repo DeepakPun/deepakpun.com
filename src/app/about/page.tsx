@@ -1,5 +1,6 @@
 "use client"
 import { motion } from 'framer-motion'
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
 import {
   Terminal,
   Cpu,
@@ -11,6 +12,24 @@ import {
   ArrowUpRight
 } from 'lucide-react'
 import { useSyncExternalStore } from 'react'
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['700'],
+  variable: '--font-display',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-sans',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-mono',
+})
 
 interface Pillar {
   title: string
@@ -98,10 +117,18 @@ function useHasMounted() {
 export default function AboutPage() {
   const hasMounted = useHasMounted()
 
-  if (!hasMounted) return <div className="min-h-full flex items-center" />
+  if (!hasMounted) {
+    return (
+      <div
+        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} min-h-full flex items-center`}
+      />
+    )
+  }
 
   return (
-    <div className="min-h-full flex items-center">
+    <div
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} font-sans min-h-full flex items-center`}
+    >
       <AboutClient data={aboutData} />
     </div>
   )
@@ -121,11 +148,11 @@ function AboutClient({ data }: { data: UpdatedAboutData }) {
           <div className='relative z-10'>
             <div className='flex items-center gap-3 mb-4'>
               <span className='h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_var(--color-emerald-400)]' />
-              <h1 className='text-[10px] font-black uppercase tracking-[0.5em] text-emerald-400'>
+              <h1 className='font-mono text-[11px] font-bold uppercase tracking-[0.35em] text-emerald-400'>
                 Professional_Mission
               </h1>
             </div>
-            <p className='text-2xl md:text-4xl font-black text-white leading-[1.05] tracking-tighter drop-shadow-sm max-w-4xl'>
+            <p className='font-(family-name:--font-display) text-2xl md:text-4xl font-bold text-white leading-[1.12] tracking-tight drop-shadow-sm max-w-4xl'>
               {data.mission}
             </p>
           </div>
@@ -150,10 +177,10 @@ function AboutClient({ data }: { data: UpdatedAboutData }) {
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className='text-xl font-bold text-white tracking-tight group-hover:text-blue-300 transition-colors'>
+                  <h3 className='font-(family-name:--font-display) text-xl font-bold text-white tracking-tight group-hover:text-blue-300 transition-colors'>
                     {pillar.title}
                   </h3>
-                  <p className='text-sm text-blue-100/60 leading-relaxed font-medium group-hover:text-blue-100/80 transition-colors'>
+                  <p className='text-sm text-blue-100/65 leading-relaxed font-normal group-hover:text-blue-100/85 transition-colors'>
                     {pillar.description}
                   </p>
                 </div>
@@ -166,7 +193,7 @@ function AboutClient({ data }: { data: UpdatedAboutData }) {
       <div className='space-y-4 pt-2'>
         <motion.div variants={itemVars} className='flex items-center gap-3 px-2'>
           <span className='h-1.5 w-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_var(--color-purple-400)]' />
-          <h2 className='text-[10px] font-black uppercase tracking-[0.5em] text-purple-400'>
+          <h2 className='font-mono text-[11px] font-bold uppercase tracking-[0.35em] text-purple-400'>
             Beyond_The_Terminal
           </h2>
         </motion.div>
@@ -189,10 +216,10 @@ function AboutClient({ data }: { data: UpdatedAboutData }) {
                   </div>
 
                   <div className="space-y-3">
-                    <h3 className='text-xl font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors'>
+                    <h3 className='font-(family-name:--font-display) text-xl font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors'>
                       {interest.title}
                     </h3>
-                    <p className='text-sm text-blue-100/60 leading-relaxed font-medium group-hover:text-blue-100/80 transition-colors'>
+                    <p className='text-sm text-blue-100/65 leading-relaxed font-normal group-hover:text-blue-100/85 transition-colors'>
                       {interest.description}
                     </p>
                   </div>
@@ -203,7 +230,8 @@ function AboutClient({ data }: { data: UpdatedAboutData }) {
                     <a
                       href={interest.highlight.href}
                       target={interest.highlight.target}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-300 hover:text-white transition-colors"
+                      rel="noopener noreferrer"
+                      className="font-mono inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-300 hover:text-white transition-colors"
                     >
                       {interest.highlight.label}
                       <ArrowUpRight size={14} />
@@ -215,41 +243,6 @@ function AboutClient({ data }: { data: UpdatedAboutData }) {
           })}
         </div>
       </div>
-
-      {/* <motion.div
-        variants={itemVars}
-        className='pt-2 px-2 flex flex-wrap items-center justify-between gap-4 text-xs text-blue-100/50'
-      >
-        <p>
-          Want to chat about DevSecOps, football tactics, or Marvel timelines?
-        </p>
-        <div className='flex items-center gap-5 font-semibold tracking-wide'>
-          <a
-            href="https://notes.deepakpun.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-emerald-400 hover:text-emerald-300 transition-colors inline-flex items-center gap-1"
-          >
-            Tech Notes <ArrowUpRight size={13} />
-          </a>
-          <a
-            href="https://github.com/DeepakPun"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition-colors inline-flex items-center gap-1"
-          >
-            GitHub <ArrowUpRight size={13} />
-          </a>
-          <a
-            href="https://linkedin.com/in/mrpun"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition-colors inline-flex items-center gap-1"
-          >
-            LinkedIn <ArrowUpRight size={13} />
-          </a>
-        </div>
-      </motion.div> */}
     </motion.div>
   )
 }
