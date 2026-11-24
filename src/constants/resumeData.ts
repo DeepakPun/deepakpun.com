@@ -19,7 +19,6 @@ export const resumeData = {
     title: "Full-Stack Developer & Cloud / DevOps Engineer",
     contact: {
         email: "iamdeepakpoon@gmail.com",
-        phone: "443-962-3873",
         location: "Parkville, MD",
         website: "deepakpun.com",
         linkedin: "www.linkedin.com/in/mrpun",

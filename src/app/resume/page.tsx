@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { resumeData } from "@/constants/resumeData";
 import { ResumePDF } from "@/components/ResumePDF";
-import { Download, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
+import { Download, ExternalLink, Eye, Mail, MapPin } from "lucide-react";
 
 const PDFDownloadLink = dynamic(
     () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
@@ -15,6 +15,11 @@ const PDFDownloadLink = dynamic(
             </span>
         ),
     }
+);
+
+const BlobProvider = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.BlobProvider),
+    { ssr: false }
 );
 
 const skillLabels: Record<string, string> = {
@@ -40,18 +45,37 @@ export default function ResumePage() {
                     </p>
                 </div>
 
-                <PDFDownloadLink
-                    document={<ResumePDF />}
-                    fileName="Deepak_Pun_Resume.pdf"
-                    className="inline-flex items-center justify-center gap-2 bg-teal-400 hover:bg-teal-300 text-zinc-950 font-mono text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full transition shrink-0"
-                >
-                    {({ loading }) => (
-                        <>
-                            <Download className="w-4 h-4" />
-                            {loading ? "Building PDF..." : "Download PDF"}
-                        </>
-                    )}
-                </PDFDownloadLink>
+                <div className="flex flex-wrap items-center gap-3 shrink-0">
+                    {/* Preview PDF in a new tab */}
+                    <BlobProvider document={<ResumePDF />}>
+                        {({ url, loading }) => (
+                            <a
+                                href={url || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-disabled={loading || !url}
+                                className="inline-flex items-center justify-center gap-2 bg-zinc-900/90 hover:bg-zinc-800 text-white border border-white/15 hover:border-teal-400/50 font-mono text-xs font-bold uppercase tracking-wider px-5 py-3 rounded-full transition"
+                            >
+                                <Eye className="w-4 h-4 text-teal-400" />
+                                {loading ? "Loading..." : "Preview PDF"}
+                            </a>
+                        )}
+                    </BlobProvider>
+
+                    {/* Direct Download */}
+                    <PDFDownloadLink
+                        document={<ResumePDF />}
+                        fileName="Deepak_Pun_Resume.pdf"
+                        className="inline-flex items-center justify-center gap-2 bg-teal-400 hover:bg-teal-300 text-zinc-950 font-mono text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full transition"
+                    >
+                        {({ loading }) => (
+                            <>
+                                <Download className="w-4 h-4" />
+                                {loading ? "Building..." : "Download PDF"}
+                            </>
+                        )}
+                    </PDFDownloadLink>
+                </div>
             </div>
 
             {/* Contact Metadata Strip (no redundant deepakpun.com link) */}
@@ -67,10 +91,6 @@ export default function ResumePage() {
                     <Mail className="w-3.5 h-3.5 text-teal-400" />
                     {resumeData.contact.email}
                 </a>
-                <span className="inline-flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-teal-400" />
-                    {resumeData.contact.phone}
-                </span>
                 <a
                     href={`https://${resumeData.contact.github}`}
                     target="_blank"
