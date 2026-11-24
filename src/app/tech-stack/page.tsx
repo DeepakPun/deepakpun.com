@@ -1,51 +1,66 @@
-"use client"
-import { motion } from 'framer-motion'
-import { FaAws } from 'react-icons/fa'
+"use client";
+
+import { motion } from "framer-motion";
+import { IconType } from "react-icons";
+import { FaAws, FaServer } from "react-icons/fa";
 import {
-  SiReact, SiNextdotjs, SiTailwindcss, SiTypescript,
-  SiNodedotjs, SiExpress,
-  // SiFlask, SiPython,
-  SiMongodb, SiGithubactions, SiDocker,
+  SiReact,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiTypescript,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiGithubactions,
+  SiDocker,
   SiEjs,
   SiJavascript,
   SiBulma,
   SiBootstrap,
-  SiPostman
-} from 'react-icons/si'
+  SiPostman,
+  SiLinux,
+  SiNginx,
+  SiGit,
+} from "react-icons/si";
+import { resumeData } from "@/constants/resumeData";
+
+// Map skill names from resumeData to their icons
+const ICON_MAP: Record<string, IconType> = {
+  "Next.js": SiNextdotjs,
+  React: SiReact,
+  Tailwind: SiTailwindcss,
+  TypeScript: SiTypescript,
+  JavaScript: SiJavascript,
+  Bulma: SiBulma,
+  Bootstrap: SiBootstrap,
+  "Node.js": SiNodedotjs,
+  Express: SiExpress,
+  "REST API": SiPostman,
+  EJS: SiEjs,
+  MongoDB: SiMongodb,
+  AWS: FaAws,
+  "GH Actions": SiGithubactions,
+  Docker: SiDocker,
+  "Docker Compose": SiDocker,
+  "Linux CLI": SiLinux,
+  Nginx: SiNginx,
+  "Git / GitHub": SiGit,
+};
 
 const categories = [
   {
     title: "FRONTEND",
-    techs: [
-      { name: "Next.js", icon: SiNextdotjs },
-      { name: "React", icon: SiReact },
-      { name: "Tailwind", icon: SiTailwindcss },
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "JavaScript", icon: SiJavascript },
-      { name: "Bulma", icon: SiBulma },
-      { name: "Bootstrap", icon: SiBootstrap },
-    ]
+    skills: resumeData.skills.frontend,
   },
   {
     title: "BACKEND",
-    techs: [
-      { name: "Node.js", icon: SiNodedotjs },
-      { name: "Express", icon: SiExpress },
-      { name: "REST API", icon: SiPostman },
-      { name: "EJS", icon: SiEjs },
-      // { name: "Django", icon: SiFlask },
-    ]
+    skills: resumeData.skills.backend,
   },
   {
     title: "OPS & DATA",
-    techs: [
-      { name: "MongoDB", icon: SiMongodb },
-      { name: "AWS", icon: FaAws },
-      { name: "GH Actions", icon: SiGithubactions },
-      { name: "Docker", icon: SiDocker },
-    ]
-  }
-]
+    skills: resumeData.skills.opsAndData,
+  },
+];
 
 export default function TechStack() {
   return (
@@ -68,21 +83,24 @@ export default function TechStack() {
             </h3>
 
             <div className="grid gap-3 mt-1">
-              {cat.techs.map((tech) => (
-                <div
-                  key={tech.name}
-                  className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 hover:border-teal-400/50 transition-colors group cursor-default"
-                >
-                  <tech.icon className="text-xl text-teal-400 group-hover:text-white transition-colors shrink-0" />
-                  <span className="font-mono text-xs font-bold text-white uppercase tracking-[0.18em] leading-none">
-                    {tech.name}
-                  </span>
-                </div>
-              ))}
+              {cat.skills.map((skillName) => {
+                const IconComponent = ICON_MAP[skillName] || FaServer;
+                return (
+                  <div
+                    key={skillName}
+                    className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 hover:border-teal-400/50 transition-colors group cursor-default"
+                  >
+                    <IconComponent className="text-xl text-teal-400 group-hover:text-white transition-colors shrink-0" />
+                    <span className="font-mono text-xs font-bold text-white uppercase tracking-[0.18em] leading-none">
+                      {skillName}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
         ))}
       </div>
     </div>
-  )
+  );
 }

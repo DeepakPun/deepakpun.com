@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "motion/react";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import Link from "next/link";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -83,15 +84,13 @@ export default function Hero() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6 max-w-xl">
-          <a
-            href="https://flowcv.com/resume/ssi26sqrov46"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono cursor-pointer px-8 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 transition-all backdrop-blur-sm uppercase text-xs tracking-widest text-center flex items-center justify-center gap-2"
+          <Link
+            href="/resume"
+            className="font-mono cursor-pointer px-8 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 hover:border-emerald-400/40 transition-all backdrop-blur-sm uppercase text-xs tracking-widest text-center flex items-center justify-center gap-2 group"
           >
             View_Resume
             <svg
-              className="w-3.5 h-3.5 text-white/40"
+              className="w-3.5 h-3.5 text-emerald-400 group-hover:translate-x-0.5 transition-transform"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -100,10 +99,10 @@ export default function Hero() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
               />
             </svg>
-          </a>
+          </Link>
         </div>
 
         {/* DevOps Pipeline Section */}

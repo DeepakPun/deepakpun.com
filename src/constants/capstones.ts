@@ -1,3 +1,4 @@
+// src/constants/capstones.ts
 export type CapstoneTier = "foundation" | "scaled" | "flagship";
 
 export interface CapstoneProject {
@@ -15,6 +16,7 @@ export interface CapstoneProject {
     finopsNote?: string;
     techStack: string[];
     status: "LIVE" | "ARCHIVED_FINOPS" | "IN_PROGRESS";
+    resumeHighlights?: string[];
 }
 
 export const CAPSTONE_PROJECTS: CapstoneProject[] = [
@@ -39,6 +41,11 @@ export const CAPSTONE_PROJECTS: CapstoneProject[] = [
             "CI/CD",
         ],
         status: "LIVE",
+        resumeHighlights: [
+            "Architected a decoupled microservices platform (Next.js UI, Node.js + Express REST APIs, MongoDB) containerized with Docker and Docker Compose.",
+            "Engineered automated GitHub Actions CI/CD pipelines with Vitest & Supertest integration checks to block broken endpoints before deployment.",
+            "Provisioned and administered a DigitalOcean Linux Droplet with Nginx reverse proxy, SSL termination, and automated container rollouts.",
+        ],
     },
     {
         id: "capstone-02",
@@ -59,5 +66,10 @@ export const CAPSTONE_PROJECTS: CapstoneProject[] = [
             "React & Express",
         ],
         status: "ARCHIVED_FINOPS",
+        resumeHighlights: [
+            "Deployed a serverless Express.js REST API on AWS Lambda behind Amazon API Gateway (HTTP API) with least-privilege IAM execution roles.",
+            "Secured a private S3 static React frontend behind Amazon CloudFront using Origin Access Control (OAC) and a custom CloudFront edge rewrite function.",
+            "Configured AWS Amplify CI/CD, synchronized strict cross-origin (CORS) policies across API Gateway and Express, and executed a full FinOps teardown ($0.00 post-verification).",
+        ],
     },
 ];

@@ -1,6 +1,7 @@
 import {
   Boxes,
   Cpu,
+  FileText,
   Home,
   // LayoutGrid,
   User,
@@ -13,6 +14,7 @@ export const NAV_LINKS = [
   { name: "/user/me", href: "/about", icon: User },
   { name: "/api/stack", href: "/tech-stack", icon: Cpu },
   { name: "/v1/cluster", href: "/ecosystem", icon: Boxes },
+  { name: "/sys/resume", href: "/resume", icon: FileText },
   // {
   //   name: "Blog",
   //   href: "https://deepakpun-blog.vercel.app/",
