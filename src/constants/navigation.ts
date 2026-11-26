@@ -1,4 +1,5 @@
 import {
+  Activity,
   Boxes,
   Cpu,
   FileText,
@@ -15,6 +16,7 @@ export const NAV_LINKS = [
   { name: "/api/stack", href: "/tech-stack", icon: Cpu },
   { name: "/v1/cluster", href: "/ecosystem", icon: Boxes },
   { name: "/sys/resume", href: "/resume", icon: FileText },
+  { name: "/sys/status", href: "/status", icon: Activity },
   // {
   //   name: "Blog",
   //   href: "https://deepakpun-blog.vercel.app/",

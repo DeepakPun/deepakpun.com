@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight, NotebookText } from "lucide-react";
 import { NAV_LINKS, SOCIAL_LINKS } from "@/constants/navigation";
 import Logo from "./Logo";
+import { PronunciationTooltip } from "./PronounciationTooltip";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,8 +32,11 @@ export default function Navbar() {
   return (
     <header className="h-16 bg-gradient-devops border-b border-white/15 flex items-center justify-between px-6 z-50 relative shadow-md">
       {/* 1. LEFT LAYER: Brand Logo */}
-      <div className="font-mono font-bold text-white tracking-tight text-xl shrink-0 drop-shadow-xs">
-        <Logo name="DEEPAK.PUN" />
+      <div className="flex items-center gap-2.5 shrink-0">
+        <div className="font-mono font-bold text-white tracking-tight text-xl drop-shadow-xs">
+          <Logo name="DEEPAK.PUN" />
+        </div>
+        <PronunciationTooltip />
       </div>
 
       {/* 2. RIGHT LAYER: Mobile Menu Button */}

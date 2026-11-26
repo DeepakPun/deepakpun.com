@@ -101,8 +101,8 @@ export default function Sidebar() {
       <div className="relative z-10 mt-auto pt-6 border-t border-white/20">
         <div className="flex items-center justify-center gap-3 px-1">
           {[
-            { icon: SiGithub, href: "https://github.com", label: "GitHub" },
-            { icon: SlSocialLinkedin, href: "https://linkedin.com", label: "LinkedIn" }
+            { icon: SiGithub, href: "https://github.com/DeepakPun", label: "GitHub" },
+            { icon: SlSocialLinkedin, href: "https://linkedin.com/in/mrpun", label: "LinkedIn" }
           ].map((social) => (
             <motion.a
               key={social.label}
