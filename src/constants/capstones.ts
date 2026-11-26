@@ -28,7 +28,7 @@ export const CAPSTONE_PROJECTS: CapstoneProject[] = [
         title: "Multiverse Labs",
         summary:
             "My first hands-on multi-service environment—built to get my feet wet with container virtualization, automated pipeline assertions, and decoupled architecture.",
-        liveLink: "https://www.labs.deepakpun.com",
+        liveLink: "labs.deepakpun.com",
         liveLabel: "Launch Live Sandbox",
         docsLink: "https://notes.deepakpun.com/notes/en/microservices-architecture/",
         docsLabel: "How I Did It",

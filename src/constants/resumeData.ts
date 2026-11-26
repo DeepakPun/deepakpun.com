@@ -3,7 +3,7 @@ import { CAPSTONE_PROJECTS } from "./capstones";
 const capstoneProjects = CAPSTONE_PROJECTS.filter(
     (project) => project.resumeHighlights && project.resumeHighlights.length > 0
 ).map((project) => {
-    const rawUrl = project.liveLink || project.docsLink || project.githubLink || "://deepakpun.com";
+    const rawUrl = project.liveLink || project.docsLink || project.githubLink || "deepakpun.com";
     const cleanUrl = rawUrl.replace(/^https?:\/\//, "").replace(/\.git$/, "");
 
     return {
